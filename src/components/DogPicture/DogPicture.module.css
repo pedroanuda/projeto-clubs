@@ -1,0 +1,28 @@
+.picture {
+    width: 12rem;
+    height: 12rem;
+    border-radius: 10px;
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.18);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 50%;
+    width: 100%;
+    height: 100%;
+    display: none;
+    border-radius: inherit;
+    cursor: pointer;
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}

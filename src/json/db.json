@@ -1,0 +1,51 @@
+[{
+    "id": "abcde2",
+    "name": "Robinho",
+    "ownerId": "hy3ew",
+    "ownerName": "Silvio",
+    "breed": "Shih-tzu",
+    "gender": "male",
+    "number": "21991721179",
+    "adress": "",
+    "isFromAClub": true,
+    "clubCost": 140.2,
+    "notes": {}
+},
+{
+    "id": "abcde3",
+    "name": "Robo",
+    "ownerId": "3efds",
+    "ownerName": "Luiz",
+    "breed": "Shih-tzu",
+    "gender": "male",
+    "number": "21991721179",
+    "adress": "",
+    "isFromAClub": true,
+    "clubCost": 140.2,
+    "notes": {}
+},
+{
+    "id": "abcde4",
+    "name": "Lyla",
+    "ownerId": "3efds",
+    "ownerName": "Luiz",
+    "breed": "Shih-tzu",
+    "gender": "female",
+    "number": "21991721179",
+    "adress": "",
+    "isFromAClub": true,
+    "clubCost": 140.2,
+    "notes": {}
+},
+{
+    "id": "abcde5",
+    "name": "Suiça",
+    "ownerId": "4eti3",
+    "ownerName": "Roberto",
+    "breed": "Shih-tzu",
+    "gender": "female",
+    "number": "21991721179",
+    "adress": "",
+    "isFromAClub": false,
+    "notes": {}
+}]

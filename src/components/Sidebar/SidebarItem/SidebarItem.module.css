@@ -1,0 +1,9 @@
+.option {
+    width: 100%;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.option.active {
+    border-left: 3px solid;
+}

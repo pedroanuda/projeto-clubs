@@ -1,0 +1,72 @@
+.card {
+    width: 100%; /* 10rem */
+    height: calc(100%);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: .8rem;
+    background-color: var(--background-color, #fff);
+    transition: transform 500ms, box-shadow 500ms;
+    box-sizing: border-box;
+    position: relative;
+    cursor: pointer;
+    z-index: 0;
+}
+
+.card:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px 1.5px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.card > div {
+    user-select: none;
+}
+
+.card h4 {
+    font-size: 1.7rem;
+}
+
+.card h6 {
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.cardDetails {
+    margin-top: 1rem;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 1fr 1fr;
+}
+
+.cardDetails > div {
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: .2rem;
+}
+
+.cardDetails > div > svg {
+    width: .9rem;
+    height: .9rem;
+}
+
+.cardDetails > div > span {
+    font-size: .9rem;
+}
+
+.cardChip {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: .8rem;
+    font-weight: 500;
+    padding: .2rem;
+    background-color: var(--accent-color, #f326f3);
+    border-radius: 10px;
+    color: #fff;
+    text-transform: uppercase;
+    position: absolute;
+    left: .35rem;
+    right: .35rem;
+    bottom: .35rem;
+}

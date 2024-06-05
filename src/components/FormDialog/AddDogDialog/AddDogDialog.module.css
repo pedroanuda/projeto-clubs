@@ -1,0 +1,9 @@
+.wholeDialog {
+    width: 35vw;
+}
+
+.stackRow {
+    display: flex;
+    gap: .5rem;
+    width: 100%;
+}

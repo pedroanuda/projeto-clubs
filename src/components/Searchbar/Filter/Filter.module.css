@@ -1,0 +1,11 @@
+.filterWindow {
+    display: flex;
+    flex-direction: column;
+    gap: .7rem;
+    min-width: 15rem;
+    padding: .5rem;
+}
+
+.filterSelect {
+    width: 100%;
+}

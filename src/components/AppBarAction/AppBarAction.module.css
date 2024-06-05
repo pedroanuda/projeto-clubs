@@ -1,0 +1,30 @@
+.actionDiv {
+    font-size: 1rem;
+    font-family: 'Roboto', Helvetica, sans-serif;
+    display: flex;
+    gap: .25rem;
+    height: 40px;
+    box-sizing: border-box;
+    border-radius: 6px;
+    padding: .5rem;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.actionDiv:hover {
+    background-color: #d6d6d6;
+}
+
+.actionDiv svg {
+    width: 25px;
+}
+
+.disabledDiv {
+    color: rgba(0, 0, 0, 0.3);
+    cursor: auto;
+}
+
+.disabledDiv:hover {
+    background-color: transparent;
+}

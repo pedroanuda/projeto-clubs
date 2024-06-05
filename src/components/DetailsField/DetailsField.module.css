@@ -1,0 +1,46 @@
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+    flex-grow: 1;
+}
+
+.field > label {
+    font-size: 1.2;
+    font-weight: 600;
+}
+
+.field > p {
+    font-size: 1.5rem;
+    min-width: 120px;
+    text-align: center;
+    padding: .2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2.5px 6px rgba(0, 0, 0, 0.31);
+}
+
+.field > input {
+    padding: .5rem;
+    min-height: calc(39px - 1rem);
+    box-shadow: 0 2.5px 6px rgba(0, 0, 0, 0.31);
+    font-size: 1rem;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+}
+
+.field fieldset {
+    border: none;
+    outline: none;
+}
+
+.field div[role="button"] {
+    padding: .5rem;
+    min-height: calc(39px - 1rem);
+    border: none;
+    background-color: #fff;
+    box-shadow: 0 2.5px 6px rgba(0, 0, 0, 0.31);
+    border-radius: 8px;
+    font-size: 1rem;
+}
