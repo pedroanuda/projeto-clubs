@@ -1,0 +1,12 @@
+{
+    "identifier": "sql-specific",
+    "description": "permissions for sql use",
+    "local": true,
+    "windows": [
+        "main"
+    ],
+    "permissions": [
+        "sql:default",
+        "sql:allow-execute"
+    ]
+}

@@ -1,6 +1,6 @@
 # Projeto Clubs
 
-![Static Badge](https://img.shields.io/badge/Situa%C3%A7%C3%A3o-parado-red)
+![Static Badge](https://img.shields.io/badge/Situa%C3%A7%C3%A3o-em%20desenvolvimento-teal)
 ![Static Badge](https://img.shields.io/badge/Inicio-2023-blue)
 
 Esse projeto contempla donos de Banho e Tosa, e tem como objetivo
