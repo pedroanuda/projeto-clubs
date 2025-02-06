@@ -2,7 +2,7 @@ import DogDetails from "pages/DogDetails";
 import ProviderPage from "pages/ProviderPage";
 import WatchingDogs from "pages/WatchingDogs";
 import ErrorPage from "pages/ErrorPage";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router";
 
 export default function AppRoutes() {
   return (
