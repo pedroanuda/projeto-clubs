@@ -1,16 +1,13 @@
 export default interface IDog {
     id: string,
     name: string,
-    ownerId: string,
-    ownerName: string,
-    breed: string,
+    breed_id: number,
+    breed_name: string,
     gender: 'male' | 'female' | string,
-    isFromAClub: boolean,
-    imagePath?: string,
-    number?: string,
-    adress?: string,
+    owners?: {id: String, name: string}[]
+    picture_path?: string,
     birthDay?: string,
-    clubCost?: number,
     shelved?: boolean,
-    notes?: Object
+    notes?: String,
+    default_pack_price?: Number
 }

@@ -1,12 +1,14 @@
-import { appWindow } from "@tauri-apps/api/window";
+import { getCurrentWindow } from "@tauri-apps/api/window";
+import { getName } from "@tauri-apps/api/app";
 import { useState } from "react";
 import { MinimizeIcon, MaximizeIcon, CloseIcon, ToggleMaximizeIcon, AddIcon1 } from "common/icons";
 import { SvgIcon } from "@mui/material";
 import styles from "./AppBar.module.css";
 import AppBarAction, { AppBarActionProps } from "components/AppBarAction";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 import FormDialog from "components/FormDialog";
-const appName = require("../../../package.json").productName;
+const appName = await getName();
+const appWindow = getCurrentWindow();
 
 export default function AppBar() {
     const [maximizeIcon, setMaximizeIcon] = useState<typeof MaximizeIcon>(MaximizeIcon);
