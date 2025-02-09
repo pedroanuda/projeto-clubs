@@ -36,6 +36,6 @@
 
 @font-face {
   font-family: "Kanit";
-  src: url("../../../public/fonts/Kanit-SemiBold.ttf");
+  src: url("/fonts/Kanit-SemiBold.ttf");
   font-weight: 600;
 }

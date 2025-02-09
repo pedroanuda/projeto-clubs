@@ -2,7 +2,7 @@ import { useTheme, Menu, MenuItem } from "@mui/material";
 import styles from "./DogCard.module.css";
 import { CSSProperties, memo, useState } from "react";
 import { BreedIcon, FemaleIcon, MaleIcon } from "common/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useDogsContext } from "common/contexts/Dogs";
 
 interface DogCardProps {
@@ -41,7 +41,7 @@ function DogCard({ id, name, ownerName, gender, breed, isFromAClub, shelved = fa
         <h6>De {ownerName}</h6>
       </div>
       <div className={styles.cardDetails}>
-        <div>
+        <div style={{flex: 1}}>
           {gender === 'female'
           ? <FemaleIcon />
           : <MaleIcon />}
@@ -51,9 +51,9 @@ function DogCard({ id, name, ownerName, gender, breed, isFromAClub, shelved = fa
             : "Macho"}
           </span>
         </div>
-        <div>
+        <div style={{flex: 1, overflowX: "clip", textOverflow: "ellipsis"}}>
           <BreedIcon />
-          <span>{breed}</span>
+          <span style={{textOverflow: "ellipsis"}}>{breed}</span>
         </div>
       </div>
       {shelved

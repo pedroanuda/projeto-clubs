@@ -20,6 +20,15 @@ export const DogFoot = createSvgIcon(
     </svg>, "DogFoot"
 )
 
+export const PersonIcon = createSvgIcon(
+    <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24">
+    <g>
+        <path fill="none" d="M0 0h24v24H0z"/>
+        <path d="M2 22a8 8 0 1 1 16 0H2zm8-9c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm10 4h4v2h-4v-2zm-3-5h7v2h-7v-2zm2-5h5v2h-5V7z"/>
+    </g>
+    </svg>, "PersonIcon"
+)
+
 export const AgendaBook = createSvgIcon(
     <svg fill="none" height="200px" width="200px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
         <path d="M475.298,0h-75.189c6.128,10.533,9.658,22.756,9.658,35.795v9.562h25.508c9.975,0,18.06,8.086,18.06,18.06v385.167 c0,9.975-8.086,18.06-18.06,18.06h-25.508v9.562c0,13.039-3.529,25.262-9.658,35.795h75.189c19.769,0,35.795-16.026,35.795-35.795 V35.795C511.093,16.026,495.068,0,475.298,0z"></path>

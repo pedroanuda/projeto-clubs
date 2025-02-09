@@ -36,6 +36,7 @@
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: 1fr 1fr;
+    width: 100%
 }
 
 .cardDetails > div {
@@ -43,6 +44,7 @@
     justify-content: flex-start;
     align-items: center;
     gap: .2rem;
+    min-width: 50%;
 }
 
 .cardDetails > div > svg {
@@ -52,6 +54,7 @@
 
 .cardDetails > div > span {
     font-size: .9rem;
+    text-overflow: ellipsis;
 }
 
 .cardChip {

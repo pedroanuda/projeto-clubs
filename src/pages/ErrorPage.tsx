@@ -1,6 +1,6 @@
 import { CSSProperties } from "react"
 import { Button } from "@mui/material"
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router"
 
 interface ErrorPageProps {
     /** That's the title of the error page */

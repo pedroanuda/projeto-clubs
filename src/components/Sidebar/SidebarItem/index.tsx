@@ -1,6 +1,6 @@
 import { ListItem, ListItemButton, ListItemIcon, ListItemText, SvgIcon } from '@mui/material';
 import styles from "./SidebarItem.module.css";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router';
 import React from 'react';
 
 interface SidebarItemProps {

@@ -1,4 +1,4 @@
-import { BaseDirectory, writeFile, readTextFile, exists, createDir } from "@tauri-apps/api/fs";
+import { BaseDirectory, writeTextFile, readTextFile, exists, mkdir } from "@tauri-apps/plugin-fs";
 
 export default class DataFile<T> {
     private data: T | null = null;
@@ -10,8 +10,8 @@ export default class DataFile<T> {
         private baseDir: BaseDirectory
     ) {
         exists(dirPath).then(res => {
-            if (!res) createDir(".", {
-                dir: baseDir,
+            if (!res) mkdir(".", {
+                baseDir,
                 recursive: true
             })
         })
@@ -19,10 +19,10 @@ export default class DataFile<T> {
 
     public async save(newState: T): Promise<void> {
         try {
-            await writeFile(
+            await writeTextFile(
                 this.fileName,
                 JSON.stringify(newState, null, 2),
-                {dir: this.baseDir}
+                {baseDir: this.baseDir}
             )
             this.data = newState;
         } catch (e) {
@@ -34,12 +34,12 @@ export default class DataFile<T> {
         try {
             const stringData = await readTextFile(
                 this.fileName,
-                {dir: this.baseDir}
+                {baseDir: this.baseDir}
             )
             this.data = JSON.parse(stringData)
         } catch (e) {
             await this.save(JSON.parse(`[]`));
-            throw Error("It wasn't possible to load the file, but an file was created.")
+            throw Error("It wasn't possible to load the file, but a file was created.")
         }
     }
 
