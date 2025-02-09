@@ -13,8 +13,8 @@ impl AppState {
     }
 }
 
-#[derive(FromRow, serde::Serialize)]
-struct Dog {
+#[derive(Default, FromRow, serde::Deserialize, serde::Serialize)]
+pub struct Dog {
     id: String,
     name: String,
     gender: String,
@@ -138,6 +138,24 @@ pub async fn get_dogs_from_owner(app_handle: tauri::AppHandle, owner_id: String)
 }
 
 #[tauri::command]
+pub async fn get_owners_from_dog(app_handle: tauri::AppHandle, dog_id: String) -> Result<String, String> {
+    let conn = connect(app_handle).await?;
+
+    let query = "
+    SELECT * FROM Owners o
+    JOIN Dogs_Owners do ON do.owner_id = o.id
+    WHERE do.dog_id = $1";
+    let obj: Vec<Owner> = sqlx::query_as(query)
+    .bind(&dog_id)
+    .fetch_all(&conn)
+    .await.map_err(|e| e.to_string())?;
+
+    conn.close().await;
+    let result = serde_json::to_string(&obj).map_err(|e| e.to_string())?;
+    Ok(result)
+}
+
+#[tauri::command]
 pub async fn search_for(app_handle: tauri::AppHandle, input: String, search_type: TypeOfSearch, limit: Option<u32>, offset: Option<u32>) -> Result<String, String> {
     let conn = connect(app_handle).await?;
 
@@ -177,4 +195,46 @@ pub async fn search_for(app_handle: tauri::AppHandle, input: String, search_type
 
     conn.close().await;
     Ok(result)
+}
+
+#[tauri::command]
+pub async fn update_dog(app_handle: tauri::AppHandle, new_dog: Dog) -> Result<(), String> {
+    let conn = connect(app_handle).await?;
+
+    let query = "
+    UPDATE Dogs SET name = $1, gender = $2, birthday = $3, shelved = $4, notes = $5, picture_path = $6, 
+    default_pack_price = $7, breed_id = $8
+    WHERE id = $9";
+    sqlx::query(query)
+    .bind(new_dog.name).bind(new_dog.gender)
+    .bind(new_dog.birthday).bind(new_dog.shelved)
+    .bind(new_dog.notes).bind(new_dog.picture_path)
+    .bind(new_dog.default_pack_price).bind(new_dog.breed_id)
+    .bind(new_dog.id).execute(&conn)
+    .await.map_err(|e| e.to_string())?;
+
+    conn.close().await;
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn delete_dog(app: tauri::AppHandle, dog_id: String) -> Result<(), String> {
+    let conn = connect(app).await?;
+    let mut tx = conn.begin().await.map_err(|e| e.to_string())?;
+
+    let query_dog = "DELETE FROM Dogs WHERE id = $1";
+    sqlx::query(&query_dog)
+    .bind(&dog_id)
+    .execute(&mut *tx)
+    .await.map_err(|e| e.to_string())?;
+
+    let query_owners = "DELETE FROM Dogs_Owners WHERE dog_id = $1";
+    sqlx::query(&query_owners)
+    .bind(&dog_id)
+    .execute(&mut *tx)
+    .await.map_err(|e| e.to_string())?;
+
+    tx.commit().await.map_err(|e| e.to_string())?;
+    conn.close().await;
+    Ok(())
 }
