@@ -13,7 +13,7 @@ CREATE TABLE Dogs (
     shelved BOOLEAN,
     notes TEXT,
     picture_path TEXT,
-    default_pack_price NUMERIC,
+    default_pack_price REAL,
     breed_id INTEGER NOT NULL,
     FOREIGN KEY (breed_id) REFERENCES Breeds(id)
 );
@@ -38,13 +38,13 @@ CREATE TABLE Service (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     icon TEXT,
     name TEXT,
-    base_price NUMERIC
+    base_price REAL
 );
 
 CREATE TABLE PackageModel (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT,
-    base_price NUMERIC
+    base_price REAL
 );
 
 CREATE TABLE PackageModel_Service (
@@ -57,7 +57,7 @@ CREATE TABLE PackageModel_Service (
 
 CREATE TABLE Payment (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    value NUMERIC,
+    value REAL,
     type TEXT CHECK(type IN ('cash', 'pix', 'credit', 'debit')),
     date DATE
 );
@@ -67,7 +67,7 @@ CREATE TABLE Package (
     status TEXT CHECK(Status IN ('in-progress', 'completed')),
     model_id INTEGER NOT NULL,
     dog_id TEXT NOT NULL,
-    payment_id INTEGER,
+    payment_id INTEGER UNIQUE,
     FOREIGN KEY (model_id) REFERENCES PackageModel(id),
     FOREIGN KEY (dog_id) REFERENCES Dogs(id),
     FOREIGN KEY (payment_id) REFERENCES Payment(id)
@@ -81,7 +81,7 @@ CREATE TABLE Scheduling (
     observations TEXT,
     package_id INTEGER,
     dog_id TEXT,
-    payment_id INTEGER,
+    payment_id INTEGER UNIQUE,
     FOREIGN KEY (package_id) REFERENCES Package(id),
     FOREIGN KEY (dog_id) REFERENCES Dogs(id),
     FOREIGN KEY (payment_id) REFERENCES Payment(id)
@@ -90,7 +90,7 @@ CREATE TABLE Scheduling (
 CREATE TABLE Service_Scheduling (
     service_id INTEGER,
     scheduling_id INTEGER,
-    price NUMERIC,
+    price REAL,
     PRIMARY KEY (service_id, scheduling_id)
 );
 

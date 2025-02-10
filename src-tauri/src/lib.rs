@@ -3,7 +3,10 @@ use tauri::{path::BaseDirectory, Manager};
 use tokio::sync::Mutex;
 
 mod queries;
-use queries::{get_dogs, get_all_owners, get_breeds, get_dogs_from_owner, search_for, update_dog, delete_dog, get_owners_from_dog};
+use queries::{
+    get_dogs, get_all_owners, get_breeds, get_dogs_from_owner, search_for,
+    update_dog, delete_dog, get_owners_from_dog, create_dog, create_owner
+};
 
 // Database Functions
 async fn check_database_creation(
@@ -50,7 +53,10 @@ pub fn run() {
         })
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_sql::Builder::new().build())
-        .invoke_handler(tauri::generate_handler![get_dogs, get_all_owners, get_breeds, get_dogs_from_owner, search_for, update_dog, delete_dog, get_owners_from_dog])
+        .invoke_handler(tauri::generate_handler![
+            get_dogs, get_all_owners, get_breeds, get_dogs_from_owner, search_for, 
+            update_dog, delete_dog, get_owners_from_dog, create_dog, create_owner
+            ])
         .run(tauri::generate_context!())
         .expect("error on running tauri application");
 }

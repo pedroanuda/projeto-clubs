@@ -1,19 +1,27 @@
 import { invoke } from "@tauri-apps/api/core";
 import IOwner from "common/interfaces/IOwner";
 
+const ownersPerPage = 50;
+
 /**
- * Fetches the information from the dog's owners.
+ * Fetches the information from owners.
  * 
- * @param dogId The dog Id.
+ * @param fromDogId The dog id. If defined, it gets the owners of this specific dog.
  * @param onlyIdAndName If true, it returns an array with objects containing only the id and name of the owners.
  * 
  * @returns `IOwner[]` or `{id, name}[]`
  */
-export async function getOwnersFromDog(dogId: string, onlyIdAndName: boolean = false) {
+export async function getOwners(page?: number, fromDogId?: string, onlyIdAndName: boolean = false) {
     try {
         type Simple = {id: String, name: string};
+        const pagingConfig = {
+            limit: page !== undefined ? ownersPerPage : null,
+            offset: page !== undefined && page > 1 ? ownersPerPage * (page - 1) : null
+        };
 
-        const raw: string = await invoke("get_owners_from_dog", {dogId});
+        const raw: string = fromDogId !== undefined 
+        ? await invoke("get_owners_from_dog", {dogId: fromDogId})
+        : await invoke("get_all_owners", pagingConfig);
         const untyped = JSON.parse(raw);
         if (onlyIdAndName) {
             return untyped.reduce((acc: Array<Simple>, item: any) => {
@@ -22,24 +30,73 @@ export async function getOwnersFromDog(dogId: string, onlyIdAndName: boolean = f
             }, [])
         }
 
-        let result: IOwner[] = untyped.map((owner: any) => {
-            if (owner.phone_numbers !== "")
-                owner.phone_numbers = convertNumbers(owner.phone_numbers);
-    
-            owner.register_date = owner.register_date !== "" 
-            ? new Date(owner.register_date)
-            : null;
-
-            return owner;
-        });
+        let result: IOwner[] = untyped.map((owner: any) => convertToIOwner(owner));
         
 
         return result;
 
     } catch (e) {
-        console.error("Error fetching owners from dog: ", e);
+        console.error("Error fetching owners: ", e);
         throw e;
     }
+}
+
+/**
+ * It takes a new {@link IOwner} object and uses the {@link convertToBackObject}
+ * function to add the owner into the database.
+ * 
+ * @param newOwner The owner that is going to be added.
+ */
+export async function addOwner(newOwner: IOwner) {
+    try {
+        await invoke("create_owner", {newOwner: convertToBackObject(newOwner)});
+    } catch (e) {
+        throw Error("Error adding owner: " + e);
+    }
+}
+
+/**
+ * Takes a typed IOwner object and converts it to something
+ * compatible with the backend command.
+ * 
+ * It does what it does by straightening the phone numbers into a string
+ * and the register date into a string too.
+ * 
+ * @param ownerObject The typed object to be converted.
+ */
+function convertToBackObject(ownerObject: IOwner) {
+    let untyped: any = {...ownerObject};
+
+    untyped.phone_numbers = ownerObject.phone_numbers
+    ? convertNumbers(ownerObject.phone_numbers)
+    : "";
+
+    untyped.register_date = ownerObject.register_date
+    ? `${ownerObject.register_date.getFullYear()}-${ownerObject.register_date.getMonth()}-${ownerObject.register_date.getDate()}`
+    : "";
+    
+    return untyped;
+}
+
+/**
+ * Takes an untyped object coming from the backend and converts it
+ * to an {@link IOwner}.
+ * 
+ * Basically, it grabs the inline separated phone numbers and converts
+ * those to a more legible object. Also, it grabs the register date coming
+ * from the database and converts it to a {@link Date} type.
+ * 
+ * @param untypedObj The object to be converted.
+ */
+function convertToIOwner(untypedObj: any): IOwner {
+    if (untypedObj.phone_numbers !== "")
+        untypedObj.phone_numbers = convertNumbers(untypedObj.phone_numbers);
+    
+    untypedObj.register_date = untypedObj.register_date !== "" 
+    ? new Date(untypedObj.register_date)
+    : null;
+    
+    return untypedObj as IOwner;
 }
 
 /**

@@ -18,24 +18,24 @@ pub struct Dog {
     id: String,
     name: String,
     gender: String,
-    birthday: String,
-    shelved: bool,
-    notes: String,
-    picture_path: String,
-    default_pack_price: f64,
     breed_id: i32,
     breed_name: String,
+    shelved: bool,
+    birthday: Option<String>,
+    notes: Option<String>,
+    picture_path: Option<String>,
+    default_pack_price: Option<f64>
 }
 
-#[derive(FromRow, serde::Serialize)]
-struct Owner {
+#[derive(FromRow, serde::Deserialize, serde::Serialize)]
+pub struct Owner {
     id: String,
     name: String,
-    phone_numbers: String,
-    email: String,
-    adresses: String,
-    about: String,
-    register_date: String
+    register_date: String,
+    email: Option<String>,
+    phone_numbers: Option<String>,
+    adresses: Option<String>,
+    about: Option<String>
 }
 
 #[derive(FromRow, serde::Serialize)]
@@ -198,6 +198,34 @@ pub async fn search_for(app_handle: tauri::AppHandle, input: String, search_type
 }
 
 #[tauri::command]
+pub async fn create_dog(app_handle: tauri::AppHandle, new_dog: Dog, owners_ids: Vec<String>) -> Result<(), String> {
+    let conn = connect(app_handle).await?;
+    let mut tx = conn.begin().await.map_err(|e| e.to_string())?;
+
+    let query = "INSERT INTO Dogs VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
+    sqlx::query(&query)
+    .bind(&new_dog.id).bind(&new_dog.name)
+    .bind(&new_dog.gender).bind(&new_dog.birthday)
+    .bind(&new_dog.shelved).bind(&new_dog.notes)
+    .bind(&new_dog.picture_path).bind(&new_dog.default_pack_price)
+    .bind(&new_dog.breed_id).execute(&mut *tx)
+    .await.map_err(|e| e.to_string())?;
+
+    let query_owner = "INSERT INTO Dogs_Owners VALUES ($1, $2)";
+    for owner_id in owners_ids {
+        sqlx::query(&query_owner)
+        .bind(&new_dog.id)
+        .bind(&owner_id)
+        .execute(&mut *tx)
+        .await.map_err(|e| e.to_string())?;
+    }
+
+    tx.commit().await.map_err(|e| e.to_string())?;
+    conn.close().await;
+    Ok(())
+}
+
+#[tauri::command]
 pub async fn update_dog(app_handle: tauri::AppHandle, new_dog: Dog) -> Result<(), String> {
     let conn = connect(app_handle).await?;
 
@@ -235,6 +263,22 @@ pub async fn delete_dog(app: tauri::AppHandle, dog_id: String) -> Result<(), Str
     .await.map_err(|e| e.to_string())?;
 
     tx.commit().await.map_err(|e| e.to_string())?;
+    conn.close().await;
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn create_owner(app_handle: tauri::AppHandle, new_owner: Owner) -> Result<(), String> {
+    let conn = connect(app_handle).await?;
+
+    let query = "INSERT INTO Owners VALUES ($1, $2, $3, $4, $5, $6, $7)";
+    sqlx::query(&query)
+    .bind(&new_owner.id).bind(&new_owner.name)
+    .bind(&new_owner.phone_numbers).bind(&new_owner.email)
+    .bind(&new_owner.adresses).bind(&new_owner.about)
+    .bind(&new_owner.register_date).execute(&conn)
+    .await.map_err(|e| e.to_string())?;
+
     conn.close().await;
     Ok(())
 }
