@@ -3,7 +3,6 @@ import styles from "./DogCard.module.css";
 import { CSSProperties, memo, useState } from "react";
 import { BreedIcon, FemaleIcon, MaleIcon } from "common/icons";
 import { useNavigate } from "react-router";
-import { useDogsContext } from "common/contexts/Dogs";
 
 interface DogCardProps {
   id: string,
@@ -18,7 +17,6 @@ interface DogCardProps {
 function DogCard({ id, name, ownerName, gender, breed, isFromAClub, shelved = false }: DogCardProps) {
   const theme = useTheme();
   const [contextMenu, setContextMenu] = useState<{mouseX: number; mouseY: number;} | null>(null);
-  const { removeDog } = useDogsContext();
   const navigate = useNavigate();
 
   const handleContextMenu = (event: React.MouseEvent) => {
@@ -66,7 +64,7 @@ function DogCard({ id, name, ownerName, gender, breed, isFromAClub, shelved = fa
     <Menu open={contextMenu !== null} onClose={() => setContextMenu(null)}
     anchorReference="anchorPosition" anchorPosition={contextMenu !== null
     ? {top: contextMenu.mouseY, left: contextMenu.mouseX} : undefined}>
-      <MenuItem onClick={() => {setContextMenu(null); removeDog(id)}}>Remover</MenuItem>
+      <MenuItem onClick={() => {setContextMenu(null);}}>Remover</MenuItem>
     </Menu>
     </>
   )
