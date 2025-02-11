@@ -6,19 +6,41 @@ import { getOwners } from "./ownerService";
 const dogsPerPage = 50;
 
 /**
- * An async function that will fetch all the dogs registered in the database.
+ * An async function that will fetch all the dogs registered in the database,
+ * or all that matches with search input.
  * 
- * @param shelved If true, it gets only archived dogs. Otherwise, it gets all dogs that are not archived.
- * @param page The page number, useful for navigating within a limit of items per page. Check: {@link dogsPerPage}.
+ * @param shelved 
+ * If true, it gets only archived dogs. Otherwise, it gets all dogs that are not archived.
+ * 
+ * @param page 
+ * The page number, useful for navigating within a limit of items per page. 
+ * Check: {@link dogsPerPage}.
+ * 
+ * @param searchInput
+ * If defined, the input will be used to get all dogs with their names, or their owners'
+ * names like it.
+ * 
+ * **Observation:** If it's defined, then the {@link shelved} parameter won't make any difference.
  * @returns A promise of an {@link IDog} array.
  */
-export async function getAllDogs(shelved: boolean, page: number = 0) {
+export async function getAllDogs(shelved: boolean, page: number = 0, searchInput?: string | null) {
     try {
-        const dogs_raw: string = await invoke('get_dogs', {
-            shelved,
+        const pageConfig = {
             limit: page <= 0 ? null : dogsPerPage, 
             offset: page <= 1 ? null : dogsPerPage * (page - 1)
+        };
+
+        const dogs_raw: string = searchInput
+        ? await invoke('search_for', {
+            input: searchInput,
+            searchType: "Dogs",
+            ...pageConfig
+        })
+        : await invoke('get_dogs', {
+            shelved,
+            ...pageConfig  
         });
+
         const dogs: IDog[] = JSON.parse(dogs_raw);
         return await Promise.all(dogs.map(async dog => {
             dog.owners = await getOwners(undefined, dog.id, true);
