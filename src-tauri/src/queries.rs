@@ -226,6 +226,23 @@ pub async fn create_dog(app_handle: tauri::AppHandle, new_dog: Dog, owners_ids: 
 }
 
 #[tauri::command]
+pub async fn get_dog(app_handle: tauri::AppHandle, id: String) -> Result<String, String> {
+    let conn = connect(app_handle).await?;
+
+    let query = "
+    SELECT d.*, b.name AS breed_name FROM Dogs d 
+    JOIN Breeds b ON b.id = d.breed_id
+    WHERE id = $1";
+    let obj: Dog = sqlx::query_as(&query)
+    .bind(id).fetch_one(&conn)
+    .await.map_err(|e| e.to_string())?;
+
+    let result = serde_json::to_string(&obj).map_err(|e| e.to_string())?;
+    conn.close().await;
+    Ok(result)
+}
+
+#[tauri::command]
 pub async fn update_dog(app_handle: tauri::AppHandle, new_dog: Dog) -> Result<(), String> {
     let conn = connect(app_handle).await?;
 
@@ -277,6 +294,38 @@ pub async fn create_owner(app_handle: tauri::AppHandle, new_owner: Owner) -> Res
     .bind(&new_owner.phone_numbers).bind(&new_owner.email)
     .bind(&new_owner.adresses).bind(&new_owner.about)
     .bind(&new_owner.register_date).execute(&conn)
+    .await.map_err(|e| e.to_string())?;
+
+    conn.close().await;
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn get_owner(app_handle: tauri::AppHandle, id: String) -> Result<String, String> {
+    let conn = connect(app_handle).await?;
+
+    let query = "SELECT * FROM Owners WHERE id = $1";
+    let obj: Owner = sqlx::query_as(&query)
+    .bind(id).fetch_one(&conn)
+    .await.map_err(|e| e.to_string())?;
+
+    let result = serde_json::to_string(&obj).map_err(|e| e.to_string())?;
+    conn.close().await;
+    Ok(result)
+}
+
+#[tauri::command]
+pub async fn update_owner(app_handle: tauri::AppHandle, new_owner: Owner) -> Result<(), String> {
+    let conn = connect(app_handle).await?;
+
+    let query = "
+    UPDATE Owners SET name = $1, phone_numbers = $2, email = $3, adresses = $4, about = $5
+    WHERE id = $6";
+    sqlx::query(query)
+    .bind(new_owner.name).bind(new_owner.phone_numbers)
+    .bind(new_owner.email).bind(new_owner.adresses)
+    .bind(new_owner.about)
+    .bind(new_owner.id).execute(&conn)
     .await.map_err(|e| e.to_string())?;
 
     conn.close().await;
