@@ -1,8 +1,50 @@
-* {
-    margin: 0;
-    padding: 0;
+@import "tailwindcss";
+
+@theme {
+  --color-surface-container-high: rgb(246, 227, 239);
 }
 
 html {
     font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    background-color: rgb(var(--md-sys-color-background));
+}
+
+:root{
+  --md-sys-color-background:255, 233, 249;
+  --md-sys-color-on-background:34, 24, 33;
+  --md-sys-color-surface:255, 247, 249;
+  --md-sys-color-surface-dim:231, 213, 225;
+  --md-sys-color-surface-bright:255, 247, 249;
+  --md-sys-color-surface-container-lowest:255, 255, 255;
+  --md-sys-color-surface-container-low:255, 239, 248;
+  --md-sys-color-surface-container:252, 233, 245;
+  --md-sys-color-surface-container-high:246, 227, 239;
+  --md-sys-color-surface-container-highest:240, 221, 233;
+  --md-sys-color-on-surface:34, 24, 33;
+  --md-sys-color-surface-variant:244, 219, 237;
+  --md-sys-color-on-surface-variant:83, 66, 79;
+  --md-sys-color-inverse-surface:56, 45, 54;
+  --md-sys-color-inverse-on-surface:254, 236, 247;
+  --md-sys-color-outline:133, 113, 128;
+  --md-sys-color-outline-variant:215, 192, 209;
+  --md-sys-color-shadow:0, 0, 0;
+  --md-sys-color-scrim:0, 0, 0;
+  --md-sys-color-surface-tint:165, 19, 167;
+  --md-sys-color-primary:165, 19, 167;
+  --md-sys-color-on-primary:255, 255, 255;
+  --md-sys-color-primary-container:255, 133, 248;
+  --md-sys-color-on-primary-container:75, 0, 77;
+  --md-sys-color-inverse-primary:255, 170, 245;
+  --md-sys-color-secondary:138, 68, 133;
+  --md-sys-color-on-secondary:255, 255, 255;
+  --md-sys-color-secondary-container:255, 182, 245;
+  --md-sys-color-on-secondary-container:96, 32, 95;
+  --md-sys-color-tertiary:160, 64, 38;
+  --md-sys-color-on-tertiary:255, 255, 255;
+  --md-sys-color-tertiary-container:255, 152, 124;
+  --md-sys-color-on-tertiary-container:81, 15, 0;
+  --md-sys-color-error:186, 26, 26;
+  --md-sys-color-on-error:255, 255, 255;
+  --md-sys-color-error-container:255, 218, 214;
+  --md-sys-color-on-error-container:65, 0, 2;
 }
