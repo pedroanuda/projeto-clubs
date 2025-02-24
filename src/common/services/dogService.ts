@@ -16,21 +16,29 @@ const dogsPerPage = 50;
  * The page number, useful for navigating within a limit of items per page. 
  * Check: {@link dogsPerPage}.
  * 
+ * @param fromOwnerId
+ * The owner's id you want to get dogs from.<br>
+ * **Observation:** If defined, then all the others parameters won't make any difference.
+ * 
  * @param searchInput
  * If defined, the input will be used to get all dogs with their names, or their owners'
- * names like it.
- * 
+ * names like it. <br />
  * **Observation:** If it's defined, then the {@link shelved} parameter won't make any difference.
+ * 
  * @returns A promise of an {@link IDog} array.
  */
-export async function getAllDogs(shelved: boolean, page: number = 0, searchInput?: string | null) {
+export async function getAllDogs(shelved: boolean, page: number = 0, fromOwnerId?: string, searchInput?: string | null) {
     try {
         const pageConfig = {
             limit: page <= 0 ? null : dogsPerPage, 
             offset: page <= 1 ? null : dogsPerPage * (page - 1)
         };
 
-        const dogs_raw: string = searchInput
+        const dogs_raw: string = fromOwnerId
+        ? await invoke('get_dogs_from_owner', {
+            ownerId: fromOwnerId
+        })
+        : searchInput
         ? await invoke('search_for', {
             input: searchInput,
             searchType: "Dogs",

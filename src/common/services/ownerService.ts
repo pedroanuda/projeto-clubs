@@ -56,6 +56,39 @@ export async function addOwner(newOwner: IOwner) {
 }
 
 /**
+ * Gets an owner object with the specified id, coming from the database,
+ * and returns it as a {@link IOwner}
+ * 
+ * @param id The owner id.
+ */
+export async function getOwner(id: string) {
+    try {
+        const untyped = JSON.parse(await invoke("get_owner", {id}));
+        return convertToIOwner(untyped);
+    } catch (e) {
+        throw Error("Error on reading owner: " + e);
+    }
+}
+
+/**
+ * Gets a modified owner object and updates the info about them in the
+ * database.
+ * 
+ * Observation: if modified, the register date won't be saved.
+ * 
+ * @param owner The modified {@link IOwner} object.
+ */
+export async function saveOwner(owner: IOwner) {
+    try {
+        let obj = convertToBackObject(owner);
+        console.log(obj);
+        await invoke("update_owner", { newOwner: obj });
+    } catch (e) {
+        throw Error("Error on saving owner: " + e);
+    }
+}
+
+/**
  * Takes a typed IOwner object and converts it to something
  * compatible with the backend command.
  * 
@@ -69,7 +102,11 @@ function convertToBackObject(ownerObject: IOwner) {
 
     untyped.phone_numbers = ownerObject.phone_numbers
     ? convertNumbers(ownerObject.phone_numbers)
-    : "";
+    : null;
+
+    untyped.addresses = ownerObject.addresses
+    ? ownerObject.addresses.join("|")
+    : null;
 
     untyped.register_date = ownerObject.register_date
     ? `${ownerObject.register_date.getFullYear()}-${ownerObject.register_date.getMonth()}-${ownerObject.register_date.getDate()}`
@@ -95,6 +132,10 @@ function convertToIOwner(untypedObj: any): IOwner {
     untypedObj.register_date = untypedObj.register_date !== "" 
     ? new Date(untypedObj.register_date)
     : null;
+
+    untypedObj.addresses = untypedObj.addresses == ""
+    ? null 
+    : untypedObj.addresses?.split("|");
     
     return untypedObj as IOwner;
 }
@@ -112,6 +153,8 @@ function convertToIOwner(untypedObj: any): IOwner {
  */
 export function convertNumbers(numbers: {label?: string, value: string}[] | string) {
     let nArray: string[] = []
+    if (!numbers) return numbers;
+
     if (typeof numbers == "string") {
         nArray = numbers.split("|");
         let objects: {label?: string, value: string}[] = nArray.map(n => {
