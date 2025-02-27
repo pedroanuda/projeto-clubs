@@ -1,20 +1,25 @@
 .titlebar {
   height: 40px;
-  background: var(--titlebar-background, #fff);
+  background: rgb(var(--md-sys-color-background, (255, 255, 255)));
   user-select: none;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: end;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 4;
-  font-family: 'Kanit', sans-serif;
+  z-index: 0;
 }
 
 .titlebarDecoration {
+  font-family: 'Kanit', sans-serif;
   padding: .5rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  user-select: none;
 }
 
 .titlebarButton {
@@ -26,7 +31,7 @@
   transition: background 250ms, color 250ms;
 }
 .titlebarButton:hover {
-  background: #d6d6d6;
+  background: #d6d6d675;
 }
 
 .titlebarButton.closeButton:hover {

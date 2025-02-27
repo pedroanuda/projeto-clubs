@@ -4,7 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import DogsGrid from "components/DogsGrid";
 import SearchBar from "components/Searchbar";
 import { getAllDogs } from "common/services/dogService";
-import React, { Fragment } from "react";
+import React from "react";
+import { Button } from "actify";
 
 export default function WatchingDogs() {
   const [searchInputValue, setSearchInputValue] = React.useState("");
@@ -14,7 +15,7 @@ export default function WatchingDogs() {
 
   const { data, isPending, isError } = useQuery({
     queryKey: ['dogos', searchQuery],
-    queryFn: () => getAllDogs(false, undefined, searchQuery)
+    queryFn: () => getAllDogs(false, undefined, undefined, searchQuery)
   });
 
   const onSearch = (e: React.FormEvent) => {
@@ -29,17 +30,17 @@ export default function WatchingDogs() {
 
   return (
     <>
-    <Breadcrumbs separator=">" aria-label="breadcrumb" sx={{margin: "1rem", marginBottom: ".2rem"}}>
+    {/* <Breadcrumbs separator=">" aria-label="breadcrumb" sx={{margin: "1rem", marginBottom: ".2rem"}}>
       {!searchParams.has("search") 
       ? <Typography>Início</Typography>
       : <Link to="/" onClick={() => setSearchInputValue("")}>Início</Link>}
       {searchParams.has("search") &&
       <Typography>Resultados da pesquisa</Typography>}
-    </Breadcrumbs>
-    <SearchBar placeholder="Procure por aqui..." value={searchInputValue} 
+    </Breadcrumbs> */}
+    <h2 className="text-2xl font-bold ml-4 mt-4 mb-2">Cachorros</h2>
+    <SearchBar placeholder="Procure por aqui..." value={searchInputValue}
     onChange={e => setSearchInputValue(e.target.value)} onSubmit={onSearch} 
-    style={{paddingTop: 0}}/>
-    <Divider />
+    className="mx-4 md:w-[50%]"/>
     {isPending
     ? <div>Carregando...</div>
     : isError
@@ -52,6 +53,10 @@ export default function WatchingDogs() {
       }
       <DogsGrid dogsList={data} />
       </>}
+      <Button className={"ml-4"}
+      onPress={() => document.querySelector(":root")?.classList.toggle("pink")}>
+        Alternar tema
+      </Button>
     </>
   )
 }

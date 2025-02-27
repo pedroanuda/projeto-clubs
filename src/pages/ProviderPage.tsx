@@ -8,22 +8,22 @@ export default function ProviderPage() {
   const secoes: SecaoAttr[] = [
     {
       sectionName: "Cachorros",
-      icon: DogFoot,
+      icon: <DogFoot />,
       link: "/"
     },
     {
       sectionName: "Donos",
-      icon: PersonIcon,
+      icon: <PersonIcon />,
       link: "/owners"
     },
     {
       sectionName: "Agenda",
-      icon: AgendaBook,
+      icon: <AgendaBook />,
       link: "/agenda"
     },
     {
       sectionName: "Estatísticas",
-      icon: StatisticsIcon,
+      icon: <StatisticsIcon />,
       link: "/estatisticas"
     }
   ]

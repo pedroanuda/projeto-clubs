@@ -1,45 +1,45 @@
 import { createSvgIcon } from "@mui/material";
 
-export const BurguerIcon = createSvgIcon(
-    <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+export const BurguerIcon = () => (
+    <svg width="800px" height="800px" viewBox="0 0 24 24" fill="CurrentColor" xmlns="http://www.w3.org/2000/svg">
         <path d="M4 18L20 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
         <path d="M4 12L20 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
         <path d="M4 6L20 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-    </svg>, "Burguer"
+    </svg>
 );
 
-export const HelpIcon = createSvgIcon(
+export const HelpIcon = () => (
     <svg fill="none" width="800px" height="800px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
         <path fill="currentColor" d="M12.83,4.86a5,5,0,0,0-3-.86,4.15,4.15,0,0,0-2.29.6h0A3.62,3.62,0,0,0,6,7.63H8.07a2.57,2.57,0,0,1,.41-1.24A1.61,1.61,0,0,1,10,5.7a1.66,1.66,0,0,1,1.44.57,2,2,0,0,1,.39,1.21,1.8,1.8,0,0,1-.36,1.08,2.18,2.18,0,0,1-.5.51l-.59.46a3.28,3.28,0,0,0-1.05,1.16A5.94,5.94,0,0,0,9,12.39H11a3.47,3.47,0,0,1,.11-.86,1.89,1.89,0,0,1,.68-.93l.57-.45a6,6,0,0,0,1.16-1.09A2.8,2.8,0,0,0,14,7.35,2.85,2.85,0,0,0,12.83,4.86ZM9,15.88h2.16V13.8H9ZM10,0A10,10,0,1,0,20,10,10,10,0,0,0,10,0Zm0,18.2A8.2,8.2,0,1,1,18.2,10,8.21,8.21,0,0,1,10,18.2Z"/>
-    </svg>, "Help"
+    </svg>
 )
 
-export const DogFoot = createSvgIcon(
-    <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill="none">
+export const DogFoot = () => (
+    <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
         <path d="M7,27H7a4,4,0,0,1-4-4V17a4,4,0,0,1,4-4H7a4,4,0,0,1,4,4v6A4,4,0,0,1,7,27ZM22,14V8a4,4,0,0,0-4-4h0a4,4,0,0,0-4,4v6a4,4,0,0,0,4,4h0A4,4,0,0,0,22,14ZM41,27h0a4,4,0,0,0,4-4V17a4,4,0,0,0-4-4h0a4,4,0,0,0-4,4v6A4,4,0,0,0,41,27ZM30,18h0a4,4,0,0,0,4-4V8a4,4,0,0,0-4-4h0a4,4,0,0,0-4,4v6A4,4,0,0,0,30,18ZM14.1,43.9s6.9-1,9.8-1,10.8,1,10.8,1c5.5,0,8.2-6.3,4.4-9.9L28.2,21.8a6.6,6.6,0,0,0-8.7,0L8.7,34C4.8,37.6,8.6,43.9,14.1,43.9Z"></path>
-    </svg>, "DogFoot"
+    </svg>
 )
 
-export const PersonIcon = createSvgIcon(
-    <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24">
+export const PersonIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="800px" height="800px" viewBox="0 0 24 24">
     <g>
         <path fill="none" d="M0 0h24v24H0z"/>
         <path d="M2 22a8 8 0 1 1 16 0H2zm8-9c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm10 4h4v2h-4v-2zm-3-5h7v2h-7v-2zm2-5h5v2h-5V7z"/>
     </g>
-    </svg>, "PersonIcon"
+    </svg>
 )
 
-export const AgendaBook = createSvgIcon(
-    <svg fill="none" height="200px" width="200px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
+export const AgendaBook = () => (
+    <svg fill="currentColor" height="200px" width="200px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.001 512.001">
         <path d="M475.298,0h-75.189c6.128,10.533,9.658,22.756,9.658,35.795v9.562h25.508c9.975,0,18.06,8.086,18.06,18.06v385.167 c0,9.975-8.086,18.06-18.06,18.06h-25.508v9.562c0,13.039-3.529,25.262-9.658,35.795h75.189c19.769,0,35.795-16.026,35.795-35.795 V35.795C511.093,16.026,495.068,0,475.298,0z"></path>
         <path d="M338.35,0h-15.63v74.409c0,2.763-3.046,4.454-5.392,2.989L296.09,64.124c-1.142-0.714-2.593-0.714-3.736,0l-21.238,13.274 c-1.086,0.679-2.456,0.714-3.576,0.094c-1.121-0.622-1.816-1.802-1.816-3.082V0C253.525,0,45.698,0,36.703,0 C16.934,0,0.908,16.026,0.908,35.795v440.41C0.908,495.974,16.933,512,36.703,512c13.209,0,288.438,0,301.647,0 c19.769,0,35.795-16.026,35.795-35.795V35.795C374.145,16.026,358.119,0,338.35,0z M256.844,266.824H118.208 c-9.837,0-17.811-7.975-17.811-17.811c0-9.837,7.975-17.811,17.811-17.811h138.636c9.837,0,17.811,7.975,17.811,17.811 C274.656,258.85,266.681,266.824,256.844,266.824z M284.802,178.34c0,10.048-8.145,18.193-18.193,18.193H108.443 c-10.048,0-18.193-8.145-18.193-18.193v-59.481c0-10.048,8.145-18.193,18.193-18.193H266.61c10.048,0,18.193,8.145,18.193,18.193 V178.34z"></path>
-    </svg>, "AgendaBook"
+    </svg>
 )
 
-export const StatisticsIcon = createSvgIcon(
-    <svg viewBox="0 0 1024 1024" fill="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+export const StatisticsIcon = () => (
+    <svg viewBox="0 0 1024 1024" fill="currentColor" version="1.1" xmlns="http://www.w3.org/2000/svg">
         <path d="M521.58 516.763v-472.816c250.725 22.642 450.175 222.092 472.817 472.817h-472.816zM918.229 593.091h-435.436c-21.963 0-39.769-17.805-39.769-39.769 0 0 0 0 0 0v-435.463c-222.914 20.121-397.682 207.273-397.682 435.436 0 241.605 195.898 437.452 437.451 437.451 228.163 0 415.339-174.715 435.436-397.657z"></path>
-    </svg>, "StatisticsIcon"
+    </svg>
 )
 
 export const SearchIcon = createSvgIcon(
@@ -97,15 +97,15 @@ export const FemaleIcon = createSvgIcon(
     </svg>, "FemaleIcon"
 )
 
-export const MaleIcon = createSvgIcon(
+export const MaleIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24" fill="none">
         <path d="M18.5 8.5C18.5 12.0899 15.5899 15 12 15C8.41015 15 5.5 12.0899 5.5 8.5C5.5 4.91015 8.41015 2 12 2C15.5899 2 18.5 4.91015 18.5 8.5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         <path d="M7.5 19H16.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         <path d="M12 22L12 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>, "MaleIcon"
+    </svg>
 )
 
-export const BreedIcon = createSvgIcon(
+export const BreedIcon = () =>(
     <svg version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 512 512">
     <g>
 	    <path fill="currentColor" d="M484.992,106.555c-42.188-21.672-96.219-40.547-145.484-61.734c-1.609-0.703-2.734-1.188-3.359-1.109
@@ -123,7 +123,7 @@ export const BreedIcon = createSvgIcon(
 	    <path fill="currentColor" d="M266.852,338.086c-25.453,0-46.094,16.781-46.094,37.5s20.641,37.5,46.094,37.5s46.094-16.781,46.094-37.5
 	    	S292.305,338.086,266.852,338.086z"/>
     </g>
-    </svg>, "BreedIcon"
+    </svg>
 )
 
 export const PencilIcon = createSvgIcon(

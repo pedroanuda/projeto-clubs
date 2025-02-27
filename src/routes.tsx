@@ -16,7 +16,7 @@ export default function AppRoutes() {
                   <Route path="view/:id" element={<OwnerDetails />} />
                 </Route>
                 <Route path="dogdetails/:id" element={<DogDetails />} />
-                <Route path="agenda" element={<div></div>} />
+                {/* <Route path="agenda" element={} /> */}
                 <Route path="*" element={<ErrorPage locationTo="/" buttonText="Ir para página inicial" title="Página ainda em desenvolvimento"/>} />
             </Route>
         </Routes>

@@ -1,9 +1,28 @@
 .option {
-    width: 100%;
+    width: calc(100% - .5rem);
+    height: 45px;
     white-space: nowrap;
     box-sizing: border-box;
+    position: relative;
+    margin: 0 .25rem;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    outline: 0;
 }
 
 .option.active {
-    border-left: 3px solid;
+    background-color: rgba(0, 0, 0, 0.06)
+}
+
+.option.active::before {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 50%;
+    border-radius: 25%;
+    margin-left: 1px;
+    background-color: rgb(var(--md-sys-color-primary));
 }
