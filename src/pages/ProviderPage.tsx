@@ -14,7 +14,7 @@ export default function ProviderPage() {
     {
       sectionName: "Donos",
       icon: PersonIcon,
-      link: "/donos"
+      link: "/owners"
     },
     {
       sectionName: "Agenda",
@@ -35,7 +35,10 @@ export default function ProviderPage() {
     <QueryClientProvider client={queryClient}>
       <AppBar />
       <Sidebar sections={secoes} titleBarHeight="40px"/>
-      <main style={{marginLeft: "3.5rem", marginTop: "40px", boxSizing: "border-box", height: "calc(100vh - 40px)", overflowY: "scroll", overflowX: "hidden"}}>
+      <main style={{marginLeft: "3.5rem", marginTop: "40px", boxSizing: "border-box", height: "calc(100vh - 40px)",
+        overflowX: "hidden", boxShadow: "0 0 3px 0 rgba(0, 0, 0, 0.2)", zIndex: 1, position: "relative",
+        backgroundColor: "rgb(var(--md-sys-color-surface))", borderTopLeftRadius: "10px"
+      }}>
           <Outlet />
       </main>
     </QueryClientProvider>

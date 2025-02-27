@@ -81,7 +81,6 @@ export async function getOwner(id: string) {
 export async function saveOwner(owner: IOwner) {
     try {
         let obj = convertToBackObject(owner);
-        console.log(obj);
         await invoke("update_owner", { newOwner: obj });
     } catch (e) {
         throw Error("Error on saving owner: " + e);

@@ -35,6 +35,7 @@
     "core:window:allow-start-dragging",
     "sql:default",
     "fs:default",
-    "clipboard-manager:allow-write-text"
+    "clipboard-manager:allow-write-text",
+    "opener:default"
   ]
 }

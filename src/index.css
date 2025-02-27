@@ -1,15 +1,51 @@
 @import "tailwindcss";
 
-@theme {
-  --color-surface-container-high: rgb(246, 227, 239);
-}
-
 html {
     font-family: 'Roboto', Arial, Helvetica, sans-serif;
     background-color: rgb(var(--md-sys-color-background));
 }
 
-:root{
+:root {
+  --md-sys-color-background:225, 240, 242;
+  --md-sys-color-on-background:22 29 30;
+  --md-sys-color-surface:244 251 252;
+  --md-sys-color-surface-dim:212 219 221;
+  --md-sys-color-surface-bright:244 251 252;
+  --md-sys-color-surface-container-lowest:255 255 255;
+  --md-sys-color-surface-container-low:238 245 246;
+  --md-sys-color-surface-container:232 239 240;
+  --md-sys-color-surface-container-high:227 233 235;
+  --md-sys-color-surface-container-highest:221 228 229;
+  --md-sys-color-on-surface:22 29 30;
+  --md-sys-color-surface-variant:215 229 232;
+  --md-sys-color-on-surface-variant:60 73 76;
+  --md-sys-color-inverse-surface:43 50 51;
+  --md-sys-color-inverse-on-surface:235 242 243;
+  --md-sys-color-outline:108 122 124;
+  --md-sys-color-outline-variant:187 201 204;
+  --md-sys-color-shadow:0 0 0;
+  --md-sys-color-scrim:0 0 0;
+  --md-sys-color-surface-tint:0 104 116;
+  --md-sys-color-primary:0 104 116;
+  --md-sys-color-on-primary:255 255 255;
+  --md-sys-color-primary-container:70 232 254;
+  --md-sys-color-on-primary-container:0 71 79;
+  --md-sys-color-inverse-primary:45 217 239;
+  --md-sys-color-secondary:51 102 110;
+  --md-sys-color-on-secondary:255 255 255;
+  --md-sys-color-secondary-container:186 237 246;
+  --md-sys-color-on-secondary-container:26 80 88;
+  --md-sys-color-tertiary:107 84 137;
+  --md-sys-color-on-tertiary:255 255 255;
+  --md-sys-color-tertiary-container:227 202 255;
+  --md-sys-color-on-tertiary-container:75 53 103;
+  --md-sys-color-error:186 26 26;
+  --md-sys-color-on-error:255 255 255;
+  --md-sys-color-error-container:255 218 214;
+  --md-sys-color-on-error-container:65 0 2;
+}
+
+:root.pink {
   --md-sys-color-background:255, 233, 249;
   --md-sys-color-on-background:34, 24, 33;
   --md-sys-color-surface:255, 247, 249;

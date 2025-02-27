@@ -34,7 +34,7 @@ pub struct Owner {
     register_date: String,
     email: Option<String>,
     phone_numbers: Option<String>,
-    adresses: Option<String>,
+    addresses: Option<String>,
     about: Option<String>,
 }
 
@@ -350,7 +350,7 @@ pub async fn create_owner(app_handle: tauri::AppHandle, new_owner: Owner) -> Res
         .bind(&new_owner.name)
         .bind(&new_owner.phone_numbers)
         .bind(&new_owner.email)
-        .bind(&new_owner.adresses)
+        .bind(&new_owner.addresses)
         .bind(&new_owner.about)
         .bind(&new_owner.register_date)
         .execute(&conn)
@@ -382,15 +382,15 @@ pub async fn update_owner(app_handle: tauri::AppHandle, new_owner: Owner) -> Res
     let conn = connect(app_handle).await?;
 
     let query = "
-    UPDATE Owners SET name = $1, phone_numbers = $2, email = $3, adresses = $4, about = $5
+    UPDATE Owners SET name = $1, phone_numbers = $2, email = $3, addresses = $4, about = $5
     WHERE id = $6";
-    sqlx::query(query)
-        .bind(new_owner.name)
-        .bind(new_owner.phone_numbers)
-        .bind(new_owner.email)
-        .bind(new_owner.adresses)
-        .bind(new_owner.about)
-        .bind(new_owner.id)
+    sqlx::query(&query)
+        .bind(&new_owner.name)
+        .bind(&new_owner.phone_numbers)
+        .bind(&new_owner.email)
+        .bind(&new_owner.addresses)
+        .bind(&new_owner.about)
+        .bind(&new_owner.id)
         .execute(&conn)
         .await
         .map_err(|e| e.to_string())?;

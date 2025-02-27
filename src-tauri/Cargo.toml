@@ -22,6 +22,7 @@ tauri-plugin-fs = "2"
 sqlx = { version = "0.8.3", features = ["sqlite"] }
 tokio = "1.38.1"
 tauri-plugin-clipboard-manager = "2"
+tauri-plugin-opener = "2"
 
 [dependencies.tauri-plugin-sql]
 features = ["sqlite"]

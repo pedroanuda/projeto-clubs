@@ -23,7 +23,7 @@ CREATE TABLE Owners (
     name TEXT NOT NULL,
     phone_numbers TEXT,
     email TEXT,
-    adresses TEXT,
+    addresses TEXT,
     about TEXT,
     register_date DATE
 );
