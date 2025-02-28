@@ -51,7 +51,7 @@ export async function getAllDogs(shelved: boolean, page: number = 0, fromOwnerId
 
         const dogs: IDog[] = JSON.parse(dogs_raw);
         return await Promise.all(dogs.map(async dog => {
-            dog.owners = await getOwners(undefined, dog.id, true);
+            dog.owners = await getOwners({fromDogId: dog.id, onlyIdAndName: true});
             return dog;
         }));
         

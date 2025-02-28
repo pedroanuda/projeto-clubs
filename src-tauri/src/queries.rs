@@ -197,14 +197,14 @@ pub async fn search_for(
         TypeOfSearch::Dogs => String::from(
             "SELECT DISTINCT d.*, b.name AS breed_name FROM Dogs d 
             JOIN Breeds b ON b.id = d.breed_id
-            JOIN Dogs_Owners do ON do.dog_id = d.id
-            JOIN Owners o ON o.id = do.owner_id
+            LEFT JOIN Dogs_Owners do ON do.dog_id = d.id
+            LEFT JOIN Owners o ON o.id = do.owner_id
             WHERE d.name LIKE $1 OR o.name LIKE $2",
         ),
         TypeOfSearch::Owners => String::from(
             "SELECT DISTINCT o.* FROM Owners o
-            JOIN Dogs_Owners do ON do.owner_id = o.id
-            JOIN Dogs d ON d.id = do.dog_id
+            LEFT JOIN Dogs_Owners do ON do.owner_id = o.id
+            LEFT JOIN Dogs d ON d.id = do.dog_id
             WHERE o.name LIKE $1 OR d.name LIKE $2",
         ),
     };

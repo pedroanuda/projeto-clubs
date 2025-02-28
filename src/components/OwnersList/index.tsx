@@ -4,11 +4,12 @@ import React from 'react'
 import { useNavigate } from 'react-router';
 
 interface OwnersListProps {
-    owners?: IOwner[],
-    nextFocusRef?: React.RefObject<HTMLElement>
+    owners?: IOwner[];
+    nextFocusRef?: React.RefObject<HTMLElement>;
+    search?: string | null;
 }
 
-export default function OwnersList({ owners, nextFocusRef }: OwnersListProps) {
+export default function OwnersList({ owners, nextFocusRef, search }: OwnersListProps) {
     const [organizedOwners, setOrganizedOwners] = React.useState<Map<string, IOwner[]>>();
     const sectionRef = React.useRef<HTMLElement>(null);
     const navigate = useNavigate();
@@ -35,9 +36,9 @@ export default function OwnersList({ owners, nextFocusRef }: OwnersListProps) {
             section.push(
             <OwnerCard onClick={() => {
                 setTimeout(() => nextFocusRef?.current?.focus(), 100);
-                navigate(`view/${owner.id}`);
+                navigate({pathname: `view/${owner.id}`, search: search ? `?search=${search}` : undefined});
             }} onEditClick={() => {
-                navigate(`view/${owner.id}?edit=1`);
+                navigate({pathname: `view/${owner.id}?edit=1`, search: search ? `?search=${search}` : undefined});
             }}
             owner={owner} key={owner.id}/>
             )
@@ -55,7 +56,7 @@ export default function OwnersList({ owners, nextFocusRef }: OwnersListProps) {
     })
 
     return (
-        <section className="m-4 mx-2 rounded-lg overflow-y-auto" ref={sectionRef}
+        <section className="mt-4 mx-2 rounded-lg overflow-y-auto" ref={sectionRef}
         style={{backgroundColor: `rgb(var(--md-sys-color-surface))`}}>
             {cards}
         </section>

@@ -48,10 +48,6 @@ export default function SearchBar({ placeholder, value, onChange, onSubmit, ...p
                 <input placeholder={placeholder} type="search" className={`w-full h-full outline-0 pr-[.8rem] py-2 rounded-[18px]`} 
                 style={{paddingLeft: "calc(24px + 1rem)"}}
                 value={value ?? ""} onChange={handleChange} ref={inputRef} {...focusProps}></input>
-                {/* <Button className={styles.searchButton} 
-                variant="contained" sx={{borderRadius: "20px", position: "absolute"}}
-                type="submit" disableElevation
-                startIcon={<SearchIcon />}>Buscar</Button> */}
                 {isFocusVisible && <FocusRing />}
             </div>
       </form>

@@ -3,17 +3,29 @@ import IOwner from "common/interfaces/IOwner";
 
 const ownersPerPage = 50;
 
+export type OwnerIdAndName = {id: string, name: string}
+interface GetOwnersParams {
+    page?: number,
+    /**
+     *  If defined, the input will be used to get all dogs with their names, or their owners'
+     *  names like it.
+     */
+    searchInput?: string | null,
+    /** The dog id. If defined, it gets the owners of this specific dog. */
+    fromDogId?: string,
+    /** If true, it returns an array with objects containing only the id and name of the owners. @default false */
+    onlyIdAndName?: boolean
+}
 /**
  * Fetches the information from owners.
- * 
- * @param fromDogId The dog id. If defined, it gets the owners of this specific dog.
- * @param onlyIdAndName If true, it returns an array with objects containing only the id and name of the owners.
- * 
- * @returns `IOwner[]` or `{id, name}[]`
  */
-export async function getOwners(page?: number, fromDogId?: string, onlyIdAndName: boolean = false) {
+export async function getOwners(params?: GetOwnersParams): Promise<IOwner[] | OwnerIdAndName[]> {
+    let page = params?.page;
+    let fromDogId = params?.fromDogId;
+    let searchInput = params?.searchInput;
+    let onlyIdAndName = params?.searchInput ?? false;
+
     try {
-        type Simple = {id: String, name: string};
         const pagingConfig = {
             limit: page !== undefined ? ownersPerPage : null,
             offset: page !== undefined && page > 1 ? ownersPerPage * (page - 1) : null
@@ -21,18 +33,18 @@ export async function getOwners(page?: number, fromDogId?: string, onlyIdAndName
 
         const raw: string = fromDogId !== undefined 
         ? await invoke("get_owners_from_dog", {dogId: fromDogId})
+        : searchInput
+        ? await invoke("search_for", {input: searchInput, searchType: "Owners", ...pagingConfig})
         : await invoke("get_all_owners", pagingConfig);
         const untyped = JSON.parse(raw);
         if (onlyIdAndName) {
-            return untyped.reduce((acc: Array<Simple>, item: any) => {
+            return untyped.reduce((acc: Array<OwnerIdAndName>, item: any) => {
                 acc.push({id: item.id, name: item.name});
                 return acc;
             }, [])
         }
 
         let result: IOwner[] = untyped.map((owner: any) => convertToIOwner(owner));
-        
-
         return result;
 
     } catch (e) {
@@ -108,7 +120,7 @@ function convertToBackObject(ownerObject: IOwner) {
     : null;
 
     untyped.register_date = ownerObject.register_date
-    ? `${ownerObject.register_date.getFullYear()}-${ownerObject.register_date.getMonth()}-${ownerObject.register_date.getDate()}`
+    ? `${ownerObject.register_date.getFullYear()}-${ownerObject.register_date.getMonth() + 1}-${ownerObject.register_date.getDate()}`
     : "";
     
     return untyped;
