@@ -3,8 +3,8 @@ import ProviderPage from "pages/ProviderPage";
 import WatchingDogs from "pages/WatchingDogs";
 import ErrorPage from "pages/ErrorPage";
 import { BrowserRouter, Routes, Route } from "react-router";
-import WatchingOwners from "pages/WatchingOwners";
-import OwnerDetails from "pages/OwnerDetails";
+import WatchingOwners from "pages/Owners/WatchingOwners";
+import OwnerDetails from "pages/Owners/OwnerDetails";
 
 export default function AppRoutes() {
   return (
@@ -14,6 +14,7 @@ export default function AppRoutes() {
                 <Route index element={<WatchingDogs />} />
                 <Route path="owners" element={<WatchingOwners />}>
                   <Route path="view/:id" element={<OwnerDetails />} />
+                  <Route path="create" element={<OwnerDetails createMode={true} />} />
                 </Route>
                 <Route path="dogdetails/:id" element={<DogDetails />} />
                 {/* <Route path="agenda" element={} /> */}
