@@ -1,14 +1,17 @@
 import React from 'react'
 
 interface StylishDialogProps {
-    open?: boolean,
-    onClose?: () => void
-    children?: React.ReactNode,
+    open?: boolean;
+    children?: React.ReactNode;
+    className?: string;
+    style?: React.CSSProperties;
+    onClose?: () => void;
 }
 
-export default function StylishDialog({ open, onClose, children }: StylishDialogProps) {
+export default function StylishDialog({ open, onClose, children, ...props }: StylishDialogProps) {
     const mainRef = React.useRef<HTMLDivElement>(null);
     const dialogRef = React.useRef<HTMLDivElement>(null);
+    const { style, className } = props;
     React.useEffect(() => {
         if (open) {
             mainRef.current?.classList.remove("hidden");
@@ -31,8 +34,9 @@ export default function StylishDialog({ open, onClose, children }: StylishDialog
     return (
     <div className={`fixed inset-0 top-[40px] z-2 items-center justify-center transition duration-500 hidden opacity-0`} ref={mainRef}>
         <div className={`absolute inset-0 bg-black opacity-30`} onClick={onClose}></div>
-        <div className='rounded-[12px] z-4 p-4 transition duration-500 scale-75 max-w-3/4 min-w-[20%] lg:max-w-2/4' role="dialog" ref={dialogRef}
-        style={{backgroundColor: "rgb(var(--md-sys-color-surface-variant))", color: "rgb(var(--md-sys-color-on-surface-variant))"}}>
+        <div className={'rounded-[12px] z-4 p-4 transition duration-500 scale-75 max-w-3/4 min-w-[20%] lg:max-w-2/4 shadow-lg'
+        + (className ? ` ${className}` : "")} role="dialog" ref={dialogRef}
+        style={{backgroundColor: "rgb(var(--md-sys-color-surface))", color: "rgb(var(--md-sys-color-on-surface))", ...style}}>
             {children}
         </div>
     </div>

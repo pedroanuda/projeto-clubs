@@ -1,5 +1,4 @@
-import { DialogContent, DialogActions, Select, TextField, Button, 
-Stack, FormControl, InputLabel, MenuItem, Radio, RadioGroup, FormControlLabel, FormLabel } from "@mui/material";
+import { DialogContent, FormControlLabel } from "@mui/material";
 import { AddIcon1 } from "common/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addDog, getBreeds } from "common/services/dogService";
@@ -9,6 +8,8 @@ import {v4 as uuid4} from "uuid";
 import styles from "./AddDogDialog.module.css";
 import IOwner from "common/interfaces/IOwner";
 import IDog from "common/interfaces/IDog";
+import { useNavigate } from "react-router";
+import { Button, Radio, RadioGroup, Select, SelectOption, TextField } from "actify";
 
 interface AddDogDialogProps {
   handleClose?: () => void;
@@ -20,8 +21,8 @@ export default function AddDogDialog({ handleClose }: AddDogDialogProps) {
   const [dogGender, setDogGender] = useState("");
   const [dogClub, setDogClub] = useState("no");
   const [dogOwner, setDogOwner] = useState("");
-  const [ownerD, setOwnerD] = useState(false);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const breedsQuery = useQuery({
     queryKey: ['breeds'],
@@ -29,7 +30,7 @@ export default function AddDogDialog({ handleClose }: AddDogDialogProps) {
   });
   const ownersQuery = useQuery({
     queryKey: ['owners'],
-    queryFn: () => getOwners(undefined, undefined, true)
+    queryFn: () => getOwners({onlyIdAndName: true})
   })
 
   const mutation = useMutation({
@@ -48,18 +49,19 @@ export default function AddDogDialog({ handleClose }: AddDogDialogProps) {
   }
 
   const getOwnerInfo = (ownerId: string) => {
-    return ownersQuery.data.find((o: any) => o.id == ownerId);
+    return ownersQuery.data?.find((o: any) => o.id == ownerId);
   }
 
   const handleAdd = () => {
     let id = uuid4();
+    let ownerInfo = getOwnerInfo(dogOwner);
     let newDog: IDog = {
       id,
       name: dogName,
       gender: dogGender,
       breed_id: parseInt(dogBreed),
       breed_name: getBreedName(parseInt(dogBreed)),
-      owners: [getOwnerInfo(dogOwner)],
+      owners: ownerInfo ? [ownerInfo] : undefined,
       shelved: false,
       birthday: null,
       default_pack_price: null,
@@ -90,66 +92,63 @@ export default function AddDogDialog({ handleClose }: AddDogDialogProps) {
 
   return (
     <>
-    <DialogContent className={styles.wholeDialog}>
-      <Stack spacing={".5rem"}>
-          <div className="picture"></div>
-          <div className={styles.stackRow}>
-            <TextField value={dogName} onChange={e => setDogName(e.target.value)} size="small"
-            style={{width: "50%"}} label="Nome"/>
-            <FormControl size="small" style={{width: "50%"}}>
-              <InputLabel id="owner-label">Dono</InputLabel>
-              <Select labelId="owner-label" label="Dono" value={dogOwner} 
-              onChange={e => {if (e.target.value != "-1") setDogOwner(e.target.value)}}>
-                <MenuItem value={"-1"} style={{gap: ".5rem"}} onClick={() => setOwnerD(true)}>
-                  <AddIcon1 />
-                  Adicionar Dono
-                </MenuItem>
-                {ownersQuery.data.map((owner: IOwner, i: number) => (
-                  <MenuItem key={i} value={owner.id}>
-                    {owner.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </div>
-          <div className={styles.stackRow}>
-            <FormControl size="small" style={{width: "60%"}}>
-              <InputLabel id="breed-label">Raça</InputLabel>
-              <Select value={dogBreed.toString()} labelId="breed-label"
-              label="Raça" defaultValue="" onChange={e => setDogBreed(e.target.value)} MenuProps={{style: {maxHeight: "280px"}}}>
-                <MenuItem value={""} disabled>Nenhuma</MenuItem>
-                {breedsQuery.data.map((b: any, i) => (
-                  <MenuItem value={b.id} key={i}>{b.name}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl size="small" style={{width: "40%"}}>
-              <InputLabel id="gender-label">Sexo</InputLabel>
-              <Select labelId="gender-label" value={dogGender} onChange={e => setDogGender(e.target.value)}
-              label="Sexo" defaultValue="">
-                <MenuItem value="" disabled>Nenhum</MenuItem>
-                <MenuItem value="male">Macho</MenuItem>
-                <MenuItem value="female">Fêmea</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-          <FormControl>
-            <FormLabel id="isAClub-label">É Clubinho?</FormLabel>
-            <RadioGroup row value={dogClub} onChange={e => setDogClub(e.target.value)}
-            defaultValue={"no"} aria-labelledby="isAClub-label">
-              <FormControlLabel value={"yes"} control={<Radio />} label="Sim"/>
-              <FormControlLabel value={"no"} control={<Radio />} label="Não"/>
-            </RadioGroup>
-          </FormControl>
-          {dogClub === "yes"
-          && <TextField label="Valor" />
-          }
-      </Stack>
-    </DialogContent>
-    <DialogActions>
-      <Button onClick={handleClose}>Cancelar</Button>
-      <Button variant="contained" onClick={handleAdd} type="submit">Cadastrar</Button>
-    </DialogActions>
+    <div className={styles.wholeDialog}>
+      <h2>Cadastrar cachorro</h2>
+      <div className="picture"></div>
+      <div className={`${styles.stackRow} ${styles.fiftyFifty}`}>
+        <TextField value={dogName} name="dog_name" onChange={value => setDogName(value)}
+        variant="outlined" label="Nome" className="w-50"/>
+        <Select label="Dono" onSelectionChange={key => {if (key != "-1") setDogOwner(key.toString())}}
+        variant="outlined" name="dog_owner">
+          <SelectOption key={"-1"} href={"../owners/create"}  textValue="Adicionar Dono">
+            <div onClick={() => navigate("../owners/create")}>
+              <AddIcon1 />
+              Adicionar Dono
+            </div>
+          </SelectOption>
+          <>
+          {ownersQuery.data.map((owner: IOwner, i: number) => (
+            <SelectOption key={owner.id}>
+              {owner.name}
+            </SelectOption>
+          ))}
+          </>
+        </Select>
+      </div>
+      <div className={`${styles.stackRow} ${styles.sixtyForty}`}>
+        <Select style={{width: "60%"}} variant="outlined" name="dog_breed"
+        label="Raça" disabledKeys={"0"} onSelectionChange={key => setDogBreed(key.toString())}>
+          <SelectOption key={"0"}>Nenhuma</SelectOption>
+          <>
+          {breedsQuery.data.map((b: any, i) => (
+            <SelectOption key={b.id}>{b.name}</SelectOption>
+          ))}
+          </>
+        </Select>
+        <Select label="Sexo" disabledKeys={"0"} onSelectionChange={key => setDogGender(key.toString())}
+        variant="outlined" name="dog_gender">
+          <SelectOption key="0">Nenhum</SelectOption>
+          <SelectOption key="male">Macho</SelectOption>
+          <SelectOption key="female">Fêmea</SelectOption>
+        </Select>
+      </div>
+
+      <h4 className="select-none mt-4">Faz parte de um pacote?</h4>
+      <RadioGroup name="isFromAPackage" aria-label="Faz parte de um pacote?" 
+      className={styles.radios} orientation="horizontal" value={dogClub}
+      onChange={value => setDogClub(value)}>
+        <Radio value="yes">Sim</Radio>
+        <Radio value="no">Não</Radio>
+      </RadioGroup>
+        
+      {dogClub === "yes"
+      && <TextField label="Valor" variant="outlined" />
+      }
+    </div>
+    <div className="flex items-center justify-end gap-2">
+      <Button variant="text" onPress={handleClose}>Cancelar</Button>
+      <Button variant="tonal" onPress={handleAdd} type="submit">Cadastrar</Button>
+    </div>
     </>
   )
 }

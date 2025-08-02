@@ -1,30 +1,28 @@
-import { Dialog } from "@mui/material"
 import { ReactElement } from "react";
 import AddDogDialog from "./AddDogDialog";
-import styles from "./FormDialog.module.css";
+import StylishDialog from "components/StylishDialog";
 
 interface FormDialogProps {
     open: boolean,
-    handleClose: () => void,
-    formOptions?: 'addDog' | 'addOwner'
+    onClose: () => void,
+    formOptions?: 'addDog'
 }
 
-export default function FormDialog({ open, handleClose, formOptions = 'addDog' }: FormDialogProps) {
+export default function FormDialog({ open, onClose, formOptions = 'addDog' }: FormDialogProps) {
     let content: ReactElement;
 
     switch (formOptions) {
         case 'addDog':
         default:
-            content = <AddDogDialog handleClose={handleClose}/>;
+            content = <AddDogDialog handleClose={onClose} />;
             break;
     }
 
     return (
     <>
-        <Dialog open={open} onClose={handleClose} className={styles.dialog}
-        slotProps={{backdrop: {sx: {top: "40px"}}}} scroll="paper">
+        <StylishDialog open={open} onClose={onClose}>
             {content}
-        </Dialog>
+        </StylishDialog>
     </>
     )
 }

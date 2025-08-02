@@ -7,8 +7,8 @@ export type OwnerIdAndName = {id: string, name: string}
 interface GetOwnersParams {
     page?: number,
     /**
-     *  If defined, the input will be used to get all dogs with their names, or their owners'
-     *  names like it.
+     *  If set, the input will be used to get all owners whose names, or their dogs' names,
+     *  are similar to it.
      */
     searchInput?: string | null,
     /** The dog id. If defined, it gets the owners of this specific dog. */

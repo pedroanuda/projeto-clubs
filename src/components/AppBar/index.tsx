@@ -1,22 +1,15 @@
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { getName } from "@tauri-apps/api/app";
-import React, { useState } from "react";
-import { MinimizeIcon, MaximizeIcon, CloseIcon, ToggleMaximizeIcon, AddIcon1 } from "common/icons";
+import { MinimizeIcon, MaximizeIcon, CloseIcon, ToggleMaximizeIcon } from "common/icons";
 import { SvgIcon } from "@mui/material";
-import styles from "./AppBar.module.css";
-import AppBarAction, { AppBarActionProps } from "components/AppBarAction";
-import { useLocation } from "react-router";
-import FormDialog from "components/FormDialog";
 import { createPortal } from "react-dom";
+import styles from "./AppBar.module.css";
+import React from "react";
 const appName = await getName();
 const appWindow = getCurrentWindow();
 
 export default function AppBar() {
-    const [maximizeIcon, setMaximizeIcon] = useState<typeof MaximizeIcon>(MaximizeIcon);
-    const [dialogOpen, setDialogOpen] = useState(false);
-
-    const actions: AppBarActionProps[] = useLocation().pathname === "/" ? [
-    {icon: AddIcon1, name: "Cadastrar Cachorro", action: () => setDialogOpen(true)}] : []
+    const [maximizeIcon, setMaximizeIcon] = React.useState<typeof MaximizeIcon>(MaximizeIcon);
 
     return (
     <>
@@ -25,10 +18,6 @@ export default function AppBar() {
         <div className={styles.titlebarDecoration} data-tauri-drag-region>
             {appName}
         </div>, document.body)}
-        {actions.length ?
-        <div>
-            {actions.map((act, indx) => <AppBarAction icon={act.icon} name={act.name} action={act.action} disabled={dialogOpen} key={indx} />)}
-        </div> : null}
         <div>
             <div className={styles.titlebarButton} onClick={() => appWindow.minimize()}>
                 <MinimizeIcon />
@@ -45,7 +34,6 @@ export default function AppBar() {
             </div>
         </div>
     </div>
-    <FormDialog handleClose={() => setDialogOpen(false)} open={dialogOpen} />
     </>
     )
 }

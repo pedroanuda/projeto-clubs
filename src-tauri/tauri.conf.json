@@ -42,7 +42,7 @@
   "productName": "Projeto Clubs",
   "mainBinaryName": "Projeto Clubs",
   "version": "0.2.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "com.pedroanuda.project-clubs",
   "plugins": {},
   "app": {
     "windows": [

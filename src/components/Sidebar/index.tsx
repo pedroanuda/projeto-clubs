@@ -41,7 +41,7 @@ export default function Sidebar({ sections, titleBarHeight = "0px" }: SidebarPro
                 <SidebarItem icon={<BurguerIcon />} isDrawerOpener stateConfig={{drawerOpened: opened, drawerSetter: handleSet}}/>
                 {sections && sections.map(section => (
                     <SidebarItem icon={section.icon}
-                    activeColor={theme.palette.primary.main}
+                    //activeColor={theme.palette.primary.main}
                     link={section.link}
                     text={section.sectionName}
                     key={section.sectionName}
@@ -50,12 +50,12 @@ export default function Sidebar({ sections, titleBarHeight = "0px" }: SidebarPro
             </ul>
             <ul className={styles.optionsGroup}>
                 <SidebarItem icon={"Settings"}
-                activeColor={theme.palette.primary.main}
+                //activeColor={theme.palette.primary.main}
                 link="/settings"
                 text="Configurações"
                 stateConfig={{drawerOpened: opened, drawerSetter: setOpened}} />
                 <SidebarItem icon={<HelpIcon />}
-                activeColor={theme.palette.primary.main}
+                //activeColor={theme.palette.primary.main}
                 link="/ajuda"
                 text="Ajuda"
                 stateConfig={{drawerOpened: opened, drawerSetter: setOpened}} />

@@ -1,9 +1,36 @@
-.wholeDialog {
-    width: 35vw;
+.wholeDialog > h2 {
+    font-weight: 500;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
 }
 
 .stackRow {
     display: flex;
     gap: .5rem;
     width: 100%;
+}
+
+.stackRow + .stackRow {
+    margin-top: .25rem;
+}
+
+.radios label,
+.stackRow button {
+    cursor: pointer;
+}
+
+.radios {
+    margin-top: -.3rem;
+}
+
+.fiftyFifty > div {
+    width: 50%;
+}
+
+.sixtyForty > div:nth-child(1) {
+    width: 60%;
+}
+
+.sixtyForty > div:nth-child(2) {
+    width: 40%;
 }

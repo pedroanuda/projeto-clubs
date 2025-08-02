@@ -38,7 +38,7 @@ export default function OwnersList({ owners, nextFocusRef, search }: OwnersListP
                 setTimeout(() => nextFocusRef?.current?.focus(), 100);
                 navigate({pathname: `view/${owner.id}`, search: search ? `?search=${search}` : undefined});
             }} onEditClick={() => {
-                navigate({pathname: `view/${owner.id}?edit=1`, search: search ? `?search=${search}` : undefined});
+                navigate({pathname: `view/${owner.id}`, search: `?edit=1${search ? `&search=${search}` : undefined}`});
             }}
             owner={owner} key={owner.id}/>
             )
