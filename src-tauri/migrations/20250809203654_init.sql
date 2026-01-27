@@ -31,6 +31,8 @@ CREATE TABLE Owners (
 CREATE TABLE Dogs_Owners (
     dog_id TEXT,
     owner_id TEXT,
+    FOREIGN KEY (dog_id) REFERENCES Dogs(id) ON DELETE CASCADE,
+    FOREIGN KEY (owner_id) REFERENCES Owners(id) ON DELETE CASCADE, 
     PRIMARY KEY (dog_id, owner_id)
 );
 
@@ -52,6 +54,8 @@ CREATE TABLE PackageModel_Service (
     service_id INTEGER,
     frequency TEXT CHECK(frequency IN ('monthly', 'weekly')),
     amount INTEGER,
+    FOREIGN KEY (package_model_id) REFERENCES PackageModel(id) ON DELETE CASCADE,
+    FOREIGN KEY (service_id) REFERENCES Service(id) ON DELETE CASCADE,
     PRIMARY KEY (package_model_id, service_id)
 );
 
@@ -68,8 +72,8 @@ CREATE TABLE Package (
     model_id INTEGER NOT NULL,
     dog_id TEXT NOT NULL,
     payment_id INTEGER UNIQUE,
-    FOREIGN KEY (model_id) REFERENCES PackageModel(id),
-    FOREIGN KEY (dog_id) REFERENCES Dogs(id),
+    FOREIGN KEY (model_id) REFERENCES PackageModel(id) ON DELETE CASCADE,
+    FOREIGN KEY (dog_id) REFERENCES Dogs(id) ON DELETE CASCADE,
     FOREIGN KEY (payment_id) REFERENCES Payment(id)
 );
 
@@ -80,10 +84,10 @@ CREATE TABLE Scheduling (
     status TEXT CHECK(status IN ('cancelled', 'lost', 'todate', 'fulfilled')),
     observations TEXT,
     package_id INTEGER,
-    dog_id TEXT,
+    dog_id TEXT NOT NULL,
     payment_id INTEGER UNIQUE,
     FOREIGN KEY (package_id) REFERENCES Package(id),
-    FOREIGN KEY (dog_id) REFERENCES Dogs(id),
+    FOREIGN KEY (dog_id) REFERENCES Dogs(id) ON DELETE CASCADE,
     FOREIGN KEY (payment_id) REFERENCES Payment(id)
 );
 
@@ -91,6 +95,8 @@ CREATE TABLE Service_Scheduling (
     service_id INTEGER,
     scheduling_id INTEGER,
     price REAL,
+    FOREIGN KEY (service_id) REFERENCES Service(id) ON DELETE CASCADE,
+    FOREIGN KEY (scheduling_id) REFERENCES Scheduling(id) ON DELETE CASCADE,
     PRIMARY KEY (service_id, scheduling_id)
 );
 
