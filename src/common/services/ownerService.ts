@@ -1,4 +1,4 @@
-import { invoke } from "@tauri-apps/api/core";
+import api from "common/api";
 import IOwner from "common/interfaces/IOwner";
 
 const ownersPerPage = 50;
@@ -31,12 +31,13 @@ export async function getOwners(params?: GetOwnersParams): Promise<IOwner[] | Ow
             offset: page !== undefined && page > 1 ? ownersPerPage * (page - 1) : null
         };
 
-        const raw: string = fromDogId !== undefined 
-        ? await invoke("get_owners_from_dog", {dogId: fromDogId})
-        : searchInput
-        ? await invoke("search_for", {input: searchInput, searchType: "Owners", ...pagingConfig})
-        : await invoke("get_all_owners", pagingConfig);
-        const untyped = JSON.parse(raw);
+        const untyped = (fromDogId !== undefined 
+        ? await api.call<object[]>('Owner', 'ListByPet', {pet_id: fromDogId})
+        : await api.list<object[]>('Owner', {
+            search: searchInput,
+            ...pagingConfig,
+        })) ?? [];
+
         if (onlyIdAndName) {
             return untyped.reduce((acc: Array<OwnerIdAndName>, item: any) => {
                 acc.push({id: item.id, name: item.name});
@@ -61,7 +62,7 @@ export async function getOwners(params?: GetOwnersParams): Promise<IOwner[] | Ow
  */
 export async function addOwner(newOwner: IOwner) {
     try {
-        await invoke("create_owner", {newOwner: convertToBackObject(newOwner)});
+        await api.create('Owner', convertToBackObject(newOwner));
     } catch (e) {
         throw Error("Error adding owner: " + e);
     }
@@ -75,8 +76,8 @@ export async function addOwner(newOwner: IOwner) {
  */
 export async function getOwner(id: string) {
     try {
-        const untyped = JSON.parse(await invoke("get_owner", {id}));
-        return convertToIOwner(untyped);
+        const ownerObject = await api.getById<object>('Owner', id);
+        return convertToIOwner(ownerObject);
     } catch (e) {
         throw Error("Error on reading owner: " + e);
     }
@@ -93,7 +94,7 @@ export async function getOwner(id: string) {
 export async function saveOwner(owner: IOwner) {
     try {
         let obj = convertToBackObject(owner);
-        await invoke("update_owner", { newOwner: obj });
+        await api.update('Owner', { newOwner: obj });
     } catch (e) {
         throw Error("Error on saving owner: " + e);
     }

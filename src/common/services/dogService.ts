@@ -1,6 +1,6 @@
-import { invoke } from "@tauri-apps/api/core";
 import IDog from "common/interfaces/IDog";
 import { getOwners } from "./ownerService";
+import api from "common/api";
 
 /** The max amount of registers per page. */
 const dogsPerPage = 50;
@@ -34,22 +34,14 @@ export async function getAllDogs(shelved: boolean, page: number = 0, fromOwnerId
             offset: page <= 1 ? null : dogsPerPage * (page - 1)
         };
 
-        const dogs_raw: string = fromOwnerId
-        ? await invoke('get_dogs_from_owner', {
-            ownerId: fromOwnerId
-        })
-        : searchInput
-        ? await invoke('search_for', {
-            input: searchInput,
-            searchType: "Dogs",
-            ...pageConfig
-        })
-        : await invoke('get_dogs', {
+        const dogs = (fromOwnerId
+        ? await api.call<IDog[]>('Pet', 'ListByOwner', {owner_id: fromOwnerId})
+        : await api.list<IDog[]>('Pet', {
+            search: searchInput,
             shelved,
-            ...pageConfig  
-        });
+            ...pageConfig,
+        })) ?? [];
 
-        const dogs: IDog[] = JSON.parse(dogs_raw);
         return await Promise.all(dogs.map(async dog => {
             dog.owners = await getOwners({fromDogId: dog.id, onlyIdAndName: true});
             return dog;
@@ -75,7 +67,7 @@ export async function addDog(newDog: IDog) {
     }, [])
 
     try {
-        await invoke("create_dog", {newDog: converted, ownersIds: ids});
+        await api.create('Pet', {newDog: converted, ownersIds: ids});
     } catch (e) {
         console.log("Error creating dog: ", e);
         throw e;
@@ -92,8 +84,7 @@ export async function getBreeds() {
             picture_path: string
         };
 
-        let raw: string = await invoke("get_breeds");
-        return JSON.parse(raw) as Breed[];
+        return await api.list<Breed[]>('Breed') ?? [];
     } catch (e) {
         throw Error("Error getting breeds: " + e);
     }
