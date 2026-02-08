@@ -1,3 +1,4 @@
+import { clsx } from 'clsx';
 import React from 'react'
 
 interface StylishDialogProps {
@@ -34,8 +35,7 @@ export default function StylishDialog({ open, onClose, children, ...props }: Sty
     return (
     <div className={`fixed inset-0 top-[40px] z-2 items-center justify-center transition duration-500 hidden opacity-0`} ref={mainRef}>
         <div className={`absolute inset-0 bg-black opacity-30`} onClick={onClose}></div>
-        <div className={'rounded-[12px] z-4 p-4 transition duration-500 scale-75 max-w-3/4 min-w-[20%] lg:max-w-2/4 shadow-lg'
-        + (className ? ` ${className}` : "")} role="dialog" ref={dialogRef}
+        <div className={clsx('rounded-[12px] z-4 p-4 transition duration-500 scale-75 max-w-3/4 min-w-[20%] lg:max-w-2/4 shadow-lg', className)} role="dialog" ref={dialogRef}
         style={{backgroundColor: "rgb(var(--md-sys-color-surface))", color: "rgb(var(--md-sys-color-on-surface))", ...style}}>
             {children}
         </div>

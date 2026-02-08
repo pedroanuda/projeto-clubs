@@ -4,7 +4,7 @@ import DogsGrid from "components/DogsGrid";
 import SearchBar from "components/Searchbar";
 import { getAllDogs } from "common/services/dogService";
 import { Button, Icon } from "actify";
-import FormDialog from "components/FormDialog";
+import AddDogDialog from "components/AddDogDialog";
 import React from "react";
 
 export default function WatchingDogs() {
@@ -57,7 +57,7 @@ export default function WatchingDogs() {
       onPress={() => document.querySelector(":root")?.classList.toggle("pink")}>
         Alternar tema
       </Button>
-      <FormDialog onClose={() => setDialogOpen(false)} open={dialogOpen} />
+      <AddDogDialog onClose={() => setDialogOpen(false)} open={dialogOpen} />
     </>
   )
 }
