@@ -1,6 +1,6 @@
 .titlebar {
   height: 40px;
-  background: rgb(var(--md-sys-color-background, (255, 255, 255)));
+  background: var(--md-sys-color-background, #fff);
   user-select: none;
   display: flex;
   align-items: center;

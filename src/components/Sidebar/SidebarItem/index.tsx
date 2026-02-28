@@ -42,11 +42,11 @@ export default function SidebarItem({ text, icon: SvgIcon, link, isDrawerOpener,
     className={`${styles.option} ${isActive ? styles.active : ""}`} {...focusProps}>
         <Ripple />
         <div className="flex items-center justify-center" style={{minWidth: "45px"}}>
-            <Icon style={{color: "rgb(var(--md-sys-color-on-secondary-container))"}} className='[--md-icon-size:24px]'>
+            <Icon style={{color: "var(--md-sys-color-on-secondary-container)"}} className='[--md-icon-size:24px]'>
                 {SvgIcon}
             </Icon>
         </div>
-        {text && <span style={{color: "rgb(var(--md-sys-color-on-secondary-container))"}}>{text}</span>}
+        {text && <span style={{color: "var(--md-sys-color-on-secondary-container)"}}>{text}</span>}
         {isFocusVisible && <FocusRing />}
     </button>
   )

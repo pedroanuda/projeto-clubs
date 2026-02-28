@@ -47,8 +47,8 @@ export default function OwnersList({ owners, nextFocusRef, search }: OwnersListP
         cards.push(
         <div key={`div-${letterIdx}`} className='mb-6'>
             <h5 className="pl-4 text-lg font-semibold sticky top-0 z-1" 
-            style={{color: "rgb(var(--md-sys-color-secondary))", 
-            backgroundColor: "rgb(var(--md-sys-color-surface))"}}>{letter}</h5>
+            style={{color: "var(--md-sys-color-secondary)", 
+            backgroundColor: "var(--md-sys-color-surface)"}}>{letter}</h5>
             <div className='flex flex-col gap-1'>
                 {section}
             </div>
@@ -57,7 +57,7 @@ export default function OwnersList({ owners, nextFocusRef, search }: OwnersListP
 
     return (
         <section className="mt-4 mx-2 rounded-lg overflow-y-auto" ref={sectionRef}
-        style={{backgroundColor: `rgb(var(--md-sys-color-surface))`}}>
+        style={{backgroundColor: `var(--md-sys-color-surface)`}}>
             {cards}
         </section>
     );

@@ -47,16 +47,16 @@ export default function StylishSnack({ text, open, onClose, position = "bottom-r
 
     const snackTheme = {
         "neutral": {
-            border: "2px solid rgb(var(--md-sys-color-primary))",
-            color: "rgb(var(--md-sys-color-primary))"
+            border: "2px solid var(--md-sys-color-primary)",
+            color: "var(--md-sys-color-primary)"
         } as React.CSSProperties,
         "success": {
             border: "2px solid #368a0a",
             color: "#368a0a"
         } as React.CSSProperties,
         "error": {
-            border: "2px solid rgb(var(--md-sys-color-error))",
-            color: "rgb(var(--md-sys-color-error))"
+            border: "2px solid var(--md-sys-color-error)",
+            color: "var(--md-sys-color-error)"
         } as React.CSSProperties
     }
 

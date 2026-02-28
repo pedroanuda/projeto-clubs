@@ -14,8 +14,8 @@ import OwnerForm from './OwnerForm';
 type TypeOfLink = 'phone' | 'email' | 'address';
 
 const boxesStyle: React.CSSProperties = {
-    backgroundColor: "rgb(var(--md-sys-color-surface-container))",
-    color: "rgb(var(--md-sys-color-on-surface-container))"
+    backgroundColor: "var(--md-sys-color-surface-container)",
+    color: "var(--md-sys-color-on-surface-container)"
 }
 
 export default function OwnerDetails(props: {createMode?: boolean}) {
@@ -93,7 +93,7 @@ export default function OwnerDetails(props: {createMode?: boolean}) {
             ? <OwnerForm closeHandler={() => navigate("../")} snackbarOpener={openSnackbar}/>
             : <>
             <div className='flex items-center justify-between w-full sticky top-0 py-2 z-2'
-            style={{backgroundColor: "rgb(var(--md-sys-color-surface))"}}>
+            style={{backgroundColor: "var(--md-sys-color-surface)"}}>
                 <div className='flex grow gap-2 items-center min-h-[48px]'>
                     <div className='md:hidden'>
                         <IconButton onPress={() => navigate("../")}>

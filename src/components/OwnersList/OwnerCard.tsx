@@ -16,7 +16,7 @@ export default function OwnerCard({owner, onClick, onEditClick}: OwnerCardProps)
   const ref = React.useRef<HTMLDivElement>(null);
   const { isFocusVisible, focusProps } = useFocusRing();
   const backgroundColor = routeParams.id == owner.id 
-  ? "rgb(var(--md-sys-color-surface-container-high))"
+  ? "var(--md-sys-color-surface-container-high)"
   : "";
 
   React.useEffect(() => {

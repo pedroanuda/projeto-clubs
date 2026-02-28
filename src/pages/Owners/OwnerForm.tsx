@@ -130,7 +130,7 @@ export default function OwnerForm({ ownerInfo, closeHandler, snackbarOpener }: O
     return (
     <form onSubmit={e => e.preventDefault()}>
     <div className='flex items-center justify-between w-full sticky top-0 py-2 z-2'
-    style={{backgroundColor: "rgb(var(--md-sys-color-surface))"}}>
+    style={{backgroundColor: "var(--md-sys-color-surface)"}}>
         <div className='flex grow gap-2 items-center'>
             <IconButton onPress={closeHandler} aria-label='Fechar'>
                 <Icon>Close</Icon>
@@ -158,7 +158,7 @@ export default function OwnerForm({ ownerInfo, closeHandler, snackbarOpener }: O
                         <AutocompleteItem>WhatsApp</AutocompleteItem>
                     </Autocomplete>
                 </div>
-                <IconButton style={{color: "rgb(var(--md-sys-color-error))"}}
+                <IconButton style={{color: "var(--md-sys-color-error)"}}
                 onPress={() => removeItem('phone', i)}>
                     <Icon>Do_Not_Disturb_On</Icon>
                 </IconButton>
@@ -183,7 +183,7 @@ export default function OwnerForm({ ownerInfo, closeHandler, snackbarOpener }: O
                         <TextField variant='outlined' label={`Endereço ${i+1}`} value={address}
                         onChange={handleAddressChange(i)}/>
                     </div>
-                    <IconButton style={{color: "rgb(var(--md-sys-color-error))"}}
+                    <IconButton style={{color: "var(--md-sys-color-error)"}}
                     onPress={() => removeItem('address', i)}>
                         <Icon>Do_Not_Disturb_On</Icon>
                     </IconButton>

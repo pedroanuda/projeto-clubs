@@ -23,7 +23,7 @@ export default function AltDogCard({ dog }: AltDogCardProps) {
     style={{backgroundColor: "white"}}>
         <Ripple />
         <div className="rounded-lg w-full h-[5rem] flex items-center justify-center font-bold text-[1.5rem] mb-2"
-        style={{backgroundColor: "rgb(var(--md-sys-color-surface-variant))", color: "rgb(var(--md-sys-color-primary))"}}>
+        style={{backgroundColor: "var(--md-sys-color-surface-variant)", color: "var(--md-sys-color-primary)"}}>
             {dog.name.charAt(0)}
         </div>
         <span className='mt-2 font-normal'>{dog.name}</span>

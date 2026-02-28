@@ -11,7 +11,7 @@ interface DetailsActionProps {
 export default function DetailsAction({ text, icon, action }: DetailsActionProps) {
   return (
     <button className='flex items-center gap-2 py-3 px-3 rounded-[12px] cursor-pointer relative font-medium hover:shadow-md transition'
-    style={{color: "rgb(var(--md-sys-color-on-secondary))", backgroundColor: "rgb(var(--md-sys-color-secondary))"}} onClick={action}>
+    style={{color: "var(--md-sys-color-on-secondary)", backgroundColor: "var(--md-sys-color-secondary)"}} onClick={action}>
       <Ripple />
       {typeof icon == "string"
       && <Icon>{icon}</Icon>}

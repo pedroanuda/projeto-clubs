@@ -39,7 +39,7 @@ export default function SearchBar({ placeholder, value, onChange, onSubmit, ...p
       <form action={""} {...props} 
       onSubmit={onSubmit} ref={formRef}>
             <div className="rounded-[18px] relative cursor-text"
-            style={{backgroundColor: "rgb(var(--md-sys-color-surface-variant))", color: "rgb(var(--md-sys-color-on-surface-variant))"}}>
+            style={{backgroundColor: "var(--md-sys-color-surface-variant)", color: "var(--md-sys-color-on-surface-variant)"}}>
                 <div className="absolute flex items-center h-full top-0 ml-[.5rem] outline-0">
                     <Icon>
                         Search
