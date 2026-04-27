@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use sqlx::{
-    migrate::{MigrateDatabase, Migrator},
+    migrate::MigrateDatabase,
     sqlite::SqlitePoolOptions,
     Sqlite, SqlitePool,
 };
@@ -28,9 +28,8 @@ pub fn get_pool() -> &'static SqlitePool {
     DB_POOL.get().expect("Erro ao buscar pool")
 }
 
-pub async fn run_migrations(migrations_path: PathBuf) -> Result<(), sqlx::Error> {
-    let migrator = Migrator::new(migrations_path).await?;
-    migrator.run(get_pool()).await?;
+pub async fn run_migrations() -> Result<(), sqlx::Error> {
+    sqlx::migrate!("./migrations").run(get_pool()).await?;
 
     Ok(())
 }
