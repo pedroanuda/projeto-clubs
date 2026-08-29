@@ -14,7 +14,7 @@ function DogsGrid({ dogsList = [] }: DogsGridProps) {
             <Grid xs={2} sm={4} md={2} key={dog.id} minHeight={160}>
                 <DogCard name={dog.name} ownerName={dog.owners ? dog.owners.reduce((acc, owner) => acc + `${owner.name} `, "") : "N/A"} breed={dog.breed_name}
                 isFromAClub={false /* Temporary code */} gender={dog.gender}
-                id={dog.id} shelved={dog.shelved} />
+                id={dog.id || ''} shelved={dog.shelved} />
             </Grid>
         ))}
     </Grid>

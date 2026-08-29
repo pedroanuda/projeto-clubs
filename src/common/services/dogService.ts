@@ -43,7 +43,7 @@ export async function getAllDogs(shelved: boolean, page: number = 0, fromOwnerId
         })) ?? [];
 
         return await Promise.all(dogs.map(async dog => {
-            dog.owners = await getOwners({fromDogId: dog.id, onlyIdAndName: true});
+            dog.owners = await getOwners({fromDogId: dog.id || '', onlyIdAndName: true});
             return dog;
         }));
         
@@ -66,8 +66,11 @@ export async function addDog(newDog: IDog) {
         return acc;
     }, [])
 
+    console.log(converted);
+    console.log(ids);
+
     try {
-        await api.create('Pet', {newDog: converted, ownersIds: ids});
+        await api.create('Pet', { ...converted, owners_ids: ids});
     } catch (e) {
         console.log("Error creating dog: ", e);
         throw e;

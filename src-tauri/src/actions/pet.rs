@@ -3,14 +3,14 @@ use serde_json::{json, Value};
 
 use crate::{
     actions::ApiResponse,
-    domain::pet::{model::Dog, service},
+    domain::pet::{dto::PetDto, service},
 };
 
 #[derive(Deserialize)]
 #[serde(tag = "action", content = "params")]
 pub enum PetAction {
-    Create(Dog),
-    Update(Dog),
+    Create(PetDto),
+    Update(PetDto),
     Get {
         id: String,
     },

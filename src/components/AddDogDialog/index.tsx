@@ -54,11 +54,11 @@ export default function AddDogDialog({ open, onClose }: AddDogDialogProps) {
     return ownersQuery.data?.find((o: any) => o.id == ownerId);
   }
 
-  const handleAdd = () => {
-    let id = uuid4();
+  const handleAdd = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     let ownerInfo = getOwnerInfo(dogOwner);
     let newDog: IDog = {
-      id,
+      id: null,
       name: dogName,
       gender: dogGender,
       breed_id: parseInt(dogBreed),
@@ -93,15 +93,16 @@ export default function AddDogDialog({ open, onClose }: AddDogDialogProps) {
   )
 
   return (
-    <StylishDialog open={open} onClose={onClose}>
+    <StylishDialog open={open} onClose={onClose} className="max-w-[80%] w-full md:max-w-[70%] lg:max-w-[60%]">
+      <form onSubmit={handleAdd} method='POST'>
       <div className={styles.wholeDialog}>
         <h2>Cadastrar cachorro</h2>
         <div className="picture"></div>
         <div className={`${styles.stackRow} ${styles.fiftyFifty}`}>
           <TextField value={dogName} name="dog_name" onChange={value => setDogName(value)}
-          variant="outlined" label="Nome" className="w-50"/>
+          variant="outlined" label="Nome" isRequired />
           <Select label="Dono" onSelectionChange={key => {if (key != "-1") setDogOwner(key?.toString() ?? "")}}
-          variant="outlined" name="dog_owner">
+          variant="outlined" name="dog_owner" isRequired>
             <SelectOption key={"-1"} href={"../owners/create"}  textValue="Adicionar Dono">
               <div onClick={() => navigate("../owners/create")}>
                 <AddIcon1 />
@@ -118,7 +119,7 @@ export default function AddDogDialog({ open, onClose }: AddDogDialogProps) {
           </Select>
         </div>
         <div className={`${styles.stackRow} ${styles.sixtyForty}`}>
-          <Select style={{width: "60%"}} variant="outlined" name="dog_breed"
+          <Select style={{width: "60%"}} variant="outlined" name="dog_breed" isRequired
           label="Raça" disabledKeys={"0"} onSelectionChange={key => setDogBreed(key?.toString() ?? "0")}>
             <SelectOption key={"0"}>Nenhuma</SelectOption>
             <>
@@ -128,7 +129,7 @@ export default function AddDogDialog({ open, onClose }: AddDogDialogProps) {
             </>
           </Select>
           <Select label="Sexo" disabledKeys={"0"} onSelectionChange={key => setDogGender(key?.toString() ?? "0")}
-          variant="outlined" name="dog_gender">
+          variant="outlined" name="dog_gender" isRequired>
             <SelectOption key="0">Nenhum</SelectOption>
             <SelectOption key="male">Macho</SelectOption>
             <SelectOption key="female">Fêmea</SelectOption>
@@ -147,10 +148,11 @@ export default function AddDogDialog({ open, onClose }: AddDogDialogProps) {
         && <TextField label="Valor" variant="outlined" />
         }
       </div>
-      <div className="flex items-center justify-end gap-2">
+      <div className="flex items-center justify-end gap-2 mt-2">
         <Button variant="text" onPress={onClose}>Cancelar</Button>
-        <Button variant="tonal" onPress={handleAdd} type="submit">Cadastrar</Button>
+        <Button variant="tonal" type="submit">Cadastrar</Button>
       </div>
+      </form>
     </StylishDialog>
   )
 }

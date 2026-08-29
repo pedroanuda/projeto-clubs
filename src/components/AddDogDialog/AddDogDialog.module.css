@@ -23,7 +23,7 @@
     margin-top: -.3rem;
 }
 
-.fiftyFifty > div {
+.fiftyFifty > :is(div, label) {
     width: 50%;
 }
 
@@ -33,4 +33,9 @@
 
 .sixtyForty > div:nth-child(2) {
     width: 40%;
+
+    /* Fixing overflowing on modal */
+    & > div:nth-child(2) {
+        min-width: 100px;
+    }
 }

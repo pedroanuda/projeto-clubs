@@ -1,5 +1,5 @@
 export default interface IDog {
-    id: string,
+    id: string | null,
     name: string,
     breed_id: number,
     breed_name: string,

@@ -1,10 +1,4 @@
-use std::path::PathBuf;
-
-use sqlx::{
-    migrate::MigrateDatabase,
-    sqlite::SqlitePoolOptions,
-    Sqlite, SqlitePool,
-};
+use sqlx::{migrate::MigrateDatabase, sqlite::SqlitePoolOptions, Sqlite, SqlitePool};
 use tokio::sync::OnceCell;
 
 static DB_POOL: OnceCell<SqlitePool> = OnceCell::const_new();

@@ -3,14 +3,14 @@ use serde_json::{json, Value};
 
 use crate::{
     actions::ApiResponse,
-    domain::owner::{model::Owner, service},
+    domain::owner::{dto::OwnerDto, service},
 };
 
 #[derive(Deserialize)]
 #[serde(tag = "action", content = "params")]
 pub enum OwnerAction {
-    Create(Owner),
-    Update(Owner),
+    Create(OwnerDto),
+    Update(OwnerDto),
     Get {
         id: String,
     },
