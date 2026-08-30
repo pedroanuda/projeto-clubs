@@ -15,7 +15,16 @@ interface OwnerFormProps {
 }
 export default function OwnerForm({ ownerInfo, closeHandler, snackbarOpener }: OwnerFormProps) {
     const [name, setName] = React.useState(ownerInfo?.name || "");
-    const [phoneNumbers, setPhoneNumbers] = React.useState(ownerInfo?.phone_numbers?.map(number => ({...number})));
+    const [phoneNumbers, setPhoneNumbers] = React.useState(
+        ownerInfo?.phone_numbers?.length
+            ? ownerInfo.phone_numbers.map(number => ({...number}))
+            : [{ value: "", label: "" }]
+    );
+    const [blurredPhones, setBlurredPhones] = React.useState<boolean[]>(() =>
+        ownerInfo?.phone_numbers?.length
+            ? ownerInfo.phone_numbers.map(n => Boolean(n.value?.trim() || n.label?.trim()))
+            : [false]
+    );
     const [addresses, setAddresses] = React.useState(ownerInfo?.addresses);
     const [email, setEmail] = React.useState(ownerInfo?.email);
     const [details, setDetails] = React.useState(ownerInfo?.about);
@@ -23,7 +32,6 @@ export default function OwnerForm({ ownerInfo, closeHandler, snackbarOpener }: O
     const navigate = useNavigate();
 
     const isEditMode = ownerInfo !== undefined;
-    const phone1Ref = React.useRef<HTMLInputElement>(null);
     const address1Ref = React.useRef<HTMLInputElement>(null);
     const queryClient = useQueryClient();
     const saveMutation = useMutation({
@@ -50,13 +58,6 @@ export default function OwnerForm({ ownerInfo, closeHandler, snackbarOpener }: O
         }
     });
 
-    const onPhone1Blur = () => {
-        const value = phone1Ref.current?.value || "";
-
-        if (value.trim() !== "") {
-            setPhoneNumbers([{ value }])
-        }
-    }
     React.useEffect(() => {
         if (addresses && addresses.length > 0) return;
         const ref = address1Ref.current;
@@ -72,6 +73,7 @@ export default function OwnerForm({ ownerInfo, closeHandler, snackbarOpener }: O
     }, [addresses?.length])
 
     async function handleSave() {
+        const validPhoneNumbers = phoneNumbers?.filter(p => p.value?.trim() || p.label?.trim());
         if (isEditMode) {
             await saveOwner({
                 id: ownerInfo.id,
@@ -79,7 +81,7 @@ export default function OwnerForm({ ownerInfo, closeHandler, snackbarOpener }: O
                 about: details,
                 addresses: addresses,
                 email,
-                phone_numbers: phoneNumbers,
+                phone_numbers: validPhoneNumbers,
                 register_date: ownerInfo.register_date
             });
         } else {
@@ -91,7 +93,7 @@ export default function OwnerForm({ ownerInfo, closeHandler, snackbarOpener }: O
                 about: details,
                 addresses: addresses,
                 email,
-                phone_numbers: phoneNumbers,
+                phone_numbers: validPhoneNumbers,
                 register_date: new Date()
             });
         }
@@ -109,6 +111,20 @@ export default function OwnerForm({ ownerInfo, closeHandler, snackbarOpener }: O
         setPhoneNumbers(newPhoneNumbers);
     }
 
+    const handlePhoneBlur = (index: number) => () => {
+        setBlurredPhones(old => {
+            if (old[index]) return old;
+            const next = [...old];
+            next[index] = true;
+            return next;
+        });
+    }
+
+    const addPhoneNumber = () => {
+        setPhoneNumbers(old => [...(old || []), { value: "", label: "" }]);
+        setBlurredPhones(old => [...old, false]);
+    }
+
     const handleAddressChange = (index: number) => (value: string) => {
         if (!addresses) {
             console.warn(`Couldn't change addresses state.`);
@@ -123,7 +139,13 @@ export default function OwnerForm({ ownerInfo, closeHandler, snackbarOpener }: O
         if (type == 'address') {
             setAddresses(old => old?.filter((_, idx) => idx != index));
         } else {
-            setPhoneNumbers(old => old?.filter((_, idx) => idx != index));
+            if (phoneNumbers && phoneNumbers.length <= 1) {
+                setPhoneNumbers([{ value: "", label: "" }]);
+                setBlurredPhones([false]);
+            } else {
+                setPhoneNumbers(old => old?.filter((_, idx) => idx != index));
+                setBlurredPhones(old => old?.filter((_, idx) => idx != index));
+            }
         }
     }
 
@@ -145,35 +167,55 @@ export default function OwnerForm({ ownerInfo, closeHandler, snackbarOpener }: O
         <TextField label="Nome" variant='outlined' value={name} onChange={e => setName(e)} autoComplete='none' />
         <TextField label="E-mail" value={email ?? ""} onChange={value => setEmail(value)} variant='outlined' autoComplete='none' />
         <div className="flex flex-col gap-3 mb-2">
-            {phoneNumbers && phoneNumbers.length > 0
-            ? phoneNumbers?.map((phoneNumber, i) => (
-            <div className='flex items-center gap-2' key={`div-phone-${i}`}>
-                <div className='flex flex-col gap-[.4rem] grow'>
-                    <MaskedTextField label="Número de Telefone" variant='outlined' mask="(00) 00000-0000" type="tel"
-                    placeholder='(00) 00000-0000' value={phoneNumber.value} onChange={handlePhoneChange(i)}/>
-                    <Autocomplete label="Marcador" variant='outlined' allowsCustomValue
-                    inputValue={phoneNumber.label} onInputChange={handlePhoneChange(i, 'label')}>
-                        <AutocompleteItem>Celular</AutocompleteItem>
-                        <AutocompleteItem>Casa</AutocompleteItem>
-                        <AutocompleteItem>WhatsApp</AutocompleteItem>
-                    </Autocomplete>
-                </div>
-                <IconButton style={{color: "var(--md-sys-color-error)"}}
-                onPress={() => removeItem('phone', i)}>
-                    <Icon>Do_Not_Disturb_On</Icon>
-                </IconButton>
-            </div>))
-            : <div className='flex flex-col gap-[.4rem]'>
-            <MaskedTextField label="Número de Telefone" variant='outlined' mask="(00) 00000-0000"
-            placeholder='(00) 00000-0000' onBlur={onPhone1Blur} ref={phone1Ref}/>
-            <Autocomplete label="Marcador" variant='outlined' allowsCustomValue>
-                <AutocompleteItem>Celular</AutocompleteItem>
-                <AutocompleteItem>Casa</AutocompleteItem>
-                <AutocompleteItem>WhatsApp</AutocompleteItem>
-            </Autocomplete>
-            </div>}
-            <Button variant='text' className="mt-[-11px] ml-[-10px]" 
-            style={{width: 'min-content'}} onPress={() => setPhoneNumbers(old => old?.concat([{value: ""}]))}>Adicionar telefone</Button>
+            {phoneNumbers?.map((phoneNumber, i) => {
+                const hasContent = Boolean(phoneNumber.value?.trim() || phoneNumber.label?.trim());
+                const showButton = (phoneNumbers.length > 1) || (blurredPhones[i] && hasContent);
+
+                return (
+                    <div className='flex items-center gap-2' key={`div-phone-${i}`}>
+                        <div className='flex flex-col gap-[.4rem] grow'>
+                            <MaskedTextField 
+                                label="Número de Telefone" 
+                                variant='outlined' 
+                                mask="(00) 00000-0000" 
+                                type="tel"
+                                placeholder='(00) 00000-0000' 
+                                value={phoneNumber.value} 
+                                onChange={handlePhoneChange(i)}
+                                onBlur={handlePhoneBlur(i)}
+                            />
+                            <Autocomplete 
+                                label="Marcador" 
+                                variant='outlined' 
+                                allowsCustomValue
+                                inputValue={phoneNumber.label ?? ''} 
+                                onInputChange={handlePhoneChange(i, 'label')}
+                                onBlur={handlePhoneBlur(i)}
+                            >
+                                <AutocompleteItem>Celular</AutocompleteItem>
+                                <AutocompleteItem>Casa</AutocompleteItem>
+                                <AutocompleteItem>WhatsApp</AutocompleteItem>
+                            </Autocomplete>
+                        </div>
+                        {showButton && (
+                            <IconButton 
+                                style={{ color: "var(--md-sys-color-error)" }}
+                                onPress={() => removeItem('phone', i)}
+                            >
+                                <Icon>Do_Not_Disturb_On</Icon>
+                            </IconButton>
+                        )}
+                    </div>
+                );
+            })}
+            <Button 
+                variant='text' 
+                className="mt-[-11px] ml-[-10px]" 
+                style={{ width: 'min-content' }} 
+                onPress={addPhoneNumber}
+            >
+                Adicionar telefone
+            </Button>
         </div>
         <div className='flex flex-col gap-3'>
             {addresses && addresses.length > 0
