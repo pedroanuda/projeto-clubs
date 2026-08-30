@@ -1,8 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams, useSearchParams } from 'react-router';
-import { getOwner } from 'common/services/ownerService';
+import { deleteOwner, getOwner } from 'common/services/ownerService';
 import { Button, Icon, IconButton} from 'actify';
-import StylishSnack from 'components/StylishSnack';
 import { openUrl } from '@tauri-apps/plugin-opener';
 import StylishDialog from 'components/StylishDialog';
 import { getAllDogs } from 'common/services/dogService';
@@ -10,6 +9,8 @@ import AltDogCard from 'components/AltDogCard';
 import { ContactInfoList } from 'components/ContactInfo';
 import React from 'react';
 import OwnerForm from './OwnerForm';
+import { useSnackbar } from 'common/contexts/SnackbarContext';
+import clsx from 'clsx';
 
 type TypeOfLink = 'phone' | 'email' | 'address';
 
@@ -24,17 +25,17 @@ export default function OwnerDetails(props: {createMode?: boolean}) {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     
-    // Snackbar and Dialog controllables
-    const [openedSnackbar, setOpenedSnackbar] = React.useState(false);
-    const [snackbarVariant, setSnackbarVariant] = React.useState<'neutral' | 'error' | 'success'>();
-    const [snackbarText, setSnackbarText] = React.useState("");
+    // Snackbar context & Dialog controllables
+    const { openSnackbar } = useSnackbar();
     const [openedDialog, setOpenedDialog] = React.useState(false);
     const [dialogContent, setDialogContent] = React.useState(<></>);
+    const [openedDeleteDialog, setOpenedDeleteDialog] = React.useState(false);
     
     // Queries etc
     const containerRef = React.useRef<HTMLDivElement>(null);
     const [editMode, setEditMode] = React.useState(false);
     const { createMode = false } = props;
+    const queryClient = useQueryClient();
     const { data, isPending, isSuccess } = useQuery({
         queryKey: ['owner', id],
         queryFn: () => id ? getOwner(id) : null
@@ -50,16 +51,29 @@ export default function OwnerDetails(props: {createMode?: boolean}) {
         else setEditMode(false)
     }, [searchParams, id]);
 
-    const openSnackbar = (text: string, variation?: 'neutral' | 'error' | 'success') => {
-        setOpenedSnackbar(true);
-        setSnackbarVariant(variation);
-        setSnackbarText(text);
-    }
+    const shouldShowUpdateDate = data?.update_date && data.update_date.valueOf() != data?.register_date?.valueOf();
 
     const openDialog = (type: TypeOfLink, value?: string) => {
         setOpenedDialog(true);
         setDialogContent(getDialogContent(type, value));
     }
+
+    const deleteMutation = useMutation({
+        mutationFn: async () => {
+            if (!id) return;
+            await deleteOwner(id);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['owneros']})
+            navigate('/owners');
+            openSnackbar("Dono deletado com sucesso.", 'success');
+            setOpenedDeleteDialog(false);
+        },
+        onError: () => {
+            openSnackbar("Erro ao deletar dono.", 'error');
+            setOpenedDeleteDialog(false);
+        }
+    })
 
     const getDialogContent = (noticeType: TypeOfLink, value?: string) => {
         const protocol = {'phone': 'tel', 'email': 'mailto'}
@@ -88,9 +102,9 @@ export default function OwnerDetails(props: {createMode?: boolean}) {
     return (
         <div className='p-4 pt-2 h-full box-border max-w-full outline-0' ref={containerRef}>
             {editMode && data
-            ? <OwnerForm ownerInfo={{...data}} closeHandler={() => setEditMode(false)} snackbarOpener={openSnackbar}/>
+            ? <OwnerForm ownerInfo={{...data}} closeHandler={() => setEditMode(false)} />
             : createMode
-            ? <OwnerForm closeHandler={() => navigate("../")} snackbarOpener={openSnackbar}/>
+            ? <OwnerForm closeHandler={() => navigate("../")} />
             : <>
             <div className='flex items-center justify-between w-full sticky top-0 py-2 z-2'
             style={{backgroundColor: "var(--md-sys-color-surface)"}}>
@@ -104,21 +118,25 @@ export default function OwnerDetails(props: {createMode?: boolean}) {
                         {isPending ? "Carregando..." : data?.name}
                     </h2>
                 </div>
-                {isSuccess &&
-                <IconButton onPress={() => setEditMode(true)}>
-                    <Icon>Edit</Icon>
-                </IconButton>}
+                {isSuccess && (
+                <div className='flex items-center'>
+                    <IconButton onPress={() => setEditMode(true)}>
+                        <Icon>Edit</Icon>
+                    </IconButton>
+                    <IconButton onPress={() => setOpenedDeleteDialog(true)}>
+                        <Icon>Delete</Icon>
+                    </IconButton>
+                </div>
+                )}
             </div>
             <div className="rounded-lg mt-2" style={boxesStyle}>
                 <h6 className="p-4 font-semibold">Dados de contato</h6>
-                {data && <ContactInfoList owner={data} dialogOpener={openDialog} 
-                snackbarOpener={openSnackbar} />}
+                {data && <ContactInfoList owner={data} dialogOpener={openDialog} />}
             </div>
             {data?.addresses &&
             <div className="rounded-lg mt-4" style={boxesStyle}>
                 <h6 className="p-4 font-semibold">Endereços</h6>
-                {<ContactInfoList owner={data} dialogOpener={openDialog}
-                snackbarOpener={openSnackbar} type='address' />}
+                {<ContactInfoList owner={data} dialogOpener={openDialog} type='address' />}
             </div>}
             <div className="rounded-lg mt-4" style={boxesStyle}>
                 <div className="p-4 pb-2 flex items-center justify-between">
@@ -143,15 +161,30 @@ export default function OwnerDetails(props: {createMode?: boolean}) {
                 ))}
             </div>}
             
+            {shouldShowUpdateDate &&
+            <span className='block text-center pt-4'>
+                Última atualização em {data.update_date?.toLocaleDateString()} às {data.update_date?.toLocaleTimeString().slice(0, -3)}
+            </span>}
             {data?.register_date &&
-            <span className='block text-center py-4'>
+            <span className={clsx('block text-center', shouldShowUpdateDate ? 'pb-4' : 'py-4')}>
                 Registrado(a) em {data.register_date.toLocaleDateString()}
             </span>}
             </>}
 
-            <StylishSnack variation={snackbarVariant} text={snackbarText} open={openedSnackbar} onClose={() => setOpenedSnackbar(false)}/>
             <StylishDialog open={openedDialog} onClose={() => setOpenedDialog(false)}>
                 {dialogContent}
+            </StylishDialog>
+            <StylishDialog open={openedDeleteDialog} onClose={() => setOpenedDeleteDialog(false)}>
+                <h6 className="text-lg font-bold">
+                    Apagar {data?.name}?
+                </h6>
+                <p className="mt-2">Ao confirmar, o tutor {data?.name} será apagado.</p>
+                <div className='flex items-center justify-end mt-4 gap-2'>
+                    <Button variant='text' onPress={() => setOpenedDeleteDialog(false)}>Cancelar</Button>
+                    <Button variant='text' onPress={() => deleteMutation.mutate()}>
+                        Confirmar
+                    </Button>
+        </div>
             </StylishDialog>
         </div>
     )

@@ -93,10 +93,25 @@ export async function getOwner(id: string) {
  */
 export async function saveOwner(owner: IOwner) {
     try {
-        let obj = convertToBackObject(owner);
-        await api.update('Owner', { newOwner: obj });
+        await api.update('Owner', convertToBackObject(owner));
     } catch (e) {
         throw Error("Error on saving owner: " + e);
+    }
+}
+
+/**
+ * Takes an owner's id and deletes them from the database.
+ * 
+ * Observation: the owner will be deleted regardless of whether they
+ * own any dogs or not.
+ * 
+ * @param ownerId The id of the owner to be deleted.
+ */
+export async function deleteOwner(ownerId: string) {
+    try {
+        await api.deleteById('Owner', ownerId);
+    } catch (e) {
+        throw Error("Error on deleting owner: " + e);
     }
 }
 
@@ -142,7 +157,11 @@ function convertToIOwner(untypedObj: any): IOwner {
         untypedObj.phone_numbers = convertNumbers(untypedObj.phone_numbers);
     
     untypedObj.register_date = untypedObj.register_date !== "" 
-    ? new Date(untypedObj.register_date)
+    ? new Date(untypedObj.register_date.replace(" ", "T") + "Z")
+    : null;
+
+    untypedObj.update_date = untypedObj.update_date !== ""
+    ? new Date(untypedObj.update_date.replace(" ", "T") + "Z")
     : null;
 
     untypedObj.addresses = untypedObj.addresses == ""

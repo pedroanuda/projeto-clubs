@@ -3,6 +3,7 @@ import { Outlet } from "react-router";
 import { DogFoot, AgendaBook, StatisticsIcon, PersonIcon } from "common/icons"
 import AppBar from "components/AppBar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { SnackbarProvider } from "common/contexts/SnackbarContext";
 
 export default function ProviderPage() {
   const secoes: SecaoAttr[] = [
@@ -33,14 +34,17 @@ export default function ProviderPage() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AppBar />
-      <Sidebar sections={secoes} titleBarHeight="40px"/>
-      <main style={{marginLeft: "3.5rem", marginTop: "40px", boxSizing: "border-box", height: "calc(100vh - 40px)",
-        overflowX: "hidden", boxShadow: "0 0 3px 0 rgba(0, 0, 0, 0.2)", zIndex: 1, position: "relative",
-        backgroundColor: "var(--md-sys-color-surface)", borderTopLeftRadius: "10px"
-      }}>
-          <Outlet />
-      </main>
+      <SnackbarProvider>
+        <AppBar />
+        <Sidebar sections={secoes} titleBarHeight="40px"/>
+        <main style={{marginLeft: "3.5rem", marginTop: "40px", boxSizing: "border-box", height: "calc(100vh - 40px)",
+          overflowX: "hidden", boxShadow: "0 0 3px 0 rgba(0, 0, 0, 0.2)", zIndex: 1, position: "relative",
+          backgroundColor: "var(--md-sys-color-surface)", borderTopLeftRadius: "10px"
+        }}>
+            <Outlet />
+        </main>
+      </SnackbarProvider>
     </QueryClientProvider>
   )
 }
+

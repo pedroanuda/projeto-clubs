@@ -3,6 +3,7 @@ pub struct Owner {
     pub id: String,
     pub name: String,
     pub register_date: String,
+    pub update_date: String,
     pub email: Option<String>,
     pub phone_numbers: Option<String>,
     pub addresses: Option<String>,

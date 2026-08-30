@@ -8,7 +8,8 @@ use crate::domain::owner::model::Owner;
 pub struct OwnerDto {
     pub id: Option<String>,
     pub name: String,
-    pub register_date: String,
+    pub register_date: Option<String>,
+    pub update_date: Option<String>,
     pub email: Option<String>,
     pub phone_numbers: Option<String>,
     pub addresses: Option<String>,
@@ -20,7 +21,8 @@ impl OwnerDto {
         Owner {
             id: self.id.unwrap_or_default(),
             name: self.name,
-            register_date: self.register_date,
+            register_date: self.register_date.unwrap_or_default(),
+            update_date: self.update_date.unwrap_or_default(),
             email: self.email,
             phone_numbers: self.phone_numbers,
             addresses: self.addresses,
@@ -34,7 +36,8 @@ impl From<Owner> for OwnerDto {
         OwnerDto {
             id: Some(o.id),
             name: o.name,
-            register_date: o.register_date,
+            register_date: Some(o.register_date),
+            update_date: Some(o.update_date),
             email: o.email,
             phone_numbers: o.phone_numbers,
             addresses: o.addresses,

@@ -3,6 +3,7 @@ import ContactInfoItem from "./ContactInfoItem";
 import IOwner from "common/interfaces/IOwner";
 import React from 'react';
 import { Icon, ListItem } from "actify";
+import { useSnackbar } from "common/contexts/SnackbarContext";
 
 interface ContactInfoListProps {
     owner: IOwner;
@@ -12,12 +13,14 @@ interface ContactInfoListProps {
 }
 
 export default function ContactInfoList(props: ContactInfoListProps) {
+    const { openSnackbar: openSnackbarContext } = useSnackbar();
     const { 
         owner,
         type = 'phoneAndEmail',
         dialogOpener: openDialog,
-        snackbarOpener: openSnackbar
+        snackbarOpener: openSnackbar = openSnackbarContext
     } = props;
+
 
     const elements: React.ReactElement[] = []
     const phonesExist = owner.phone_numbers && owner.phone_numbers.toString() !== "";

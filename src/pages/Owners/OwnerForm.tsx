@@ -7,6 +7,7 @@ import MaskedTextField from 'components/MaskedTextField';
 import { v4 as uuid4 } from 'uuid';
 import React from 'react';
 import { useNavigate } from 'react-router';
+import { useSnackbar } from 'common/contexts/SnackbarContext';
 
 interface OwnerFormProps {
     ownerInfo?: IOwner;
@@ -14,6 +15,9 @@ interface OwnerFormProps {
     snackbarOpener?: (text: string, variation?: 'neutral' | 'error' | 'success') => void
 }
 export default function OwnerForm({ ownerInfo, closeHandler, snackbarOpener }: OwnerFormProps) {
+    const { openSnackbar: openSnackbarContext } = useSnackbar();
+    const openSnackbar = snackbarOpener ?? openSnackbarContext;
+
     const [name, setName] = React.useState(ownerInfo?.name || "");
     const [phoneNumbers, setPhoneNumbers] = React.useState(
         ownerInfo?.phone_numbers?.length
@@ -41,20 +45,17 @@ export default function OwnerForm({ ownerInfo, closeHandler, snackbarOpener }: O
                 queryClient.invalidateQueries({queryKey: ['owner', ownerInfo.id]});
 
             queryClient.invalidateQueries({queryKey: ['owneros']});
-            if (snackbarOpener)
-                snackbarOpener(`"${name}" salvo com sucesso!`, 'success');
+            openSnackbar(`"${name}" salvo com sucesso!`, 'success');
 
             if (isEditMode)
                 closeHandler();
             else navigate("../view/" + newId);
         },
         onError: (e) => {
-            if (snackbarOpener) {
-                snackbarOpener(isEditMode
-                    ? "Erro ao salvar dono."
-                    : "Erro ao criar dono", 'error');
-                console.error(e);
-            }
+            openSnackbar(isEditMode
+                ? "Erro ao salvar dono."
+                : "Erro ao criar dono", 'error');
+            console.error(e);
         }
     });
 
@@ -81,8 +82,7 @@ export default function OwnerForm({ ownerInfo, closeHandler, snackbarOpener }: O
                 about: details,
                 addresses: addresses,
                 email,
-                phone_numbers: validPhoneNumbers,
-                register_date: ownerInfo.register_date
+                phone_numbers: validPhoneNumbers
             });
         } else {
             const id = uuid4();
@@ -93,8 +93,7 @@ export default function OwnerForm({ ownerInfo, closeHandler, snackbarOpener }: O
                 about: details,
                 addresses: addresses,
                 email,
-                phone_numbers: validPhoneNumbers,
-                register_date: new Date()
+                phone_numbers: validPhoneNumbers
             });
         }
     }
