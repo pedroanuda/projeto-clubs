@@ -11,9 +11,13 @@ pub fn setup(app: &mut App) -> tauri::Result<()> {
     std::fs::create_dir_all(&dir_path).expect("Error on creating data dirs!");
 
     let formatted_db_path = format!("sqlite:{}", db_file_path.display());
-    tauri::async_runtime::spawn(async move {
-        db::init_db(&formatted_db_path).await.unwrap();
-        db::run_migrations().await.unwrap();
+    tauri::async_runtime::block_on(async move {
+        db::init_db(&formatted_db_path)
+            .await
+            .expect("Erro ao inicializar banco de dados");
+        db::run_migrations()
+            .await
+            .expect("Erro ao rodar migrations");
     });
 
     Ok(())
