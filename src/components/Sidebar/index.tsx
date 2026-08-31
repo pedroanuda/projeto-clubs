@@ -56,7 +56,7 @@ export default function Sidebar({ sections, titleBarHeight = "0px" }: SidebarPro
                 stateConfig={{drawerOpened: opened, drawerSetter: setOpened}} />
                 <SidebarItem icon={<HelpIcon />}
                 //activeColor={theme.palette.primary.main}
-                link="/ajuda"
+                link="/help"
                 text="Ajuda"
                 stateConfig={{drawerOpened: opened, drawerSetter: setOpened}} />
             </ul>
