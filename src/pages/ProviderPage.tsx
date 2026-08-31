@@ -9,7 +9,7 @@ import { ConfigurationProvider } from 'common/contexts/ConfigurationContext';
 export default function ProviderPage() {
   const secoes: SecaoAttr[] = [
     {
-      sectionName: 'Cachorros',
+      sectionName: 'Pets',
       icon: <DogFoot />,
       link: '/',
     },
