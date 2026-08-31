@@ -53,10 +53,6 @@ export default function WatchingDogs() {
       }
       <DogsGrid dogsList={data} />
       </>}
-      <Button className={"ml-4"}
-      onPress={() => document.querySelector(":root")?.classList.toggle("pink")}>
-        Alternar tema
-      </Button>
       <AddDogDialog onClose={() => setDialogOpen(false)} open={dialogOpen} />
     </>
   )

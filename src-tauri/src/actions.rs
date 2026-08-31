@@ -2,6 +2,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 
 mod breed;
+mod configuration;
 mod owner;
 mod pet;
 
@@ -40,6 +41,7 @@ pub enum Action {
     Owner(owner::OwnerAction),
     Pet(pet::PetAction),
     Breed(breed::BreedAction),
+    Configuration(configuration::ConfigurationAction),
 }
 
 pub async fn handle(payload: Value) -> Result<Value, Value> {
@@ -49,6 +51,7 @@ pub async fn handle(payload: Value) -> Result<Value, Value> {
         Action::Owner(act) => owner::handle(act).await,
         Action::Pet(act) => pet::handle(act).await,
         Action::Breed(act) => breed::handle(act).await,
+        Action::Configuration(act) => configuration::handle(act).await,
     }
     .map_err(|e| json!(e))
 }

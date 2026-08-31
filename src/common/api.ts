@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 
-export type ApiEntity = 'Pet' | 'Owner' | 'Breed';
+export type ApiEntity = 'Pet' | 'Owner' | 'Breed' | 'Configuration';
 
 export type ApiResponse<T> = {
     success: boolean;
