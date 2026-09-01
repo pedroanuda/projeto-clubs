@@ -26,7 +26,7 @@ pub async fn get_pet(id: &str) -> Result<ApiResponse<PetDto>, ApiResponse> {
 pub async fn list_pets(
     page: Option<u32>,
     pets_per_page: Option<u32>,
-    shelved: Option<bool>,
+    status: Option<String>,
     search: Option<String>,
 ) -> Result<ApiResponse<Vec<PetDto>>, ApiResponse> {
     let limit = pets_per_page;
@@ -34,7 +34,7 @@ pub async fn list_pets(
 
     let dogs: Vec<Dog> = match search {
         Some(search_str) => repository::search_pets(&search_str, limit, offset).await,
-        None => repository::get_all_pets(shelved, limit, offset).await,
+        None => repository::get_all_pets(status, limit, offset).await,
     }
     .map_err(|e| ApiResponse::error(&e.to_string()))?;
 

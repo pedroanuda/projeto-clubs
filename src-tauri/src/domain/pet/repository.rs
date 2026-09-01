@@ -7,7 +7,7 @@ use crate::{
 };
 
 pub async fn get_all_pets(
-    shelved: Option<bool>,
+    status: Option<String>,
     limit: Option<u32>,
     offset: Option<u32>,
 ) -> Result<Vec<Dog>, sqlx::Error> {
@@ -18,10 +18,10 @@ pub async fn get_all_pets(
         JOIN Breeds b ON b.id = d.breed_id
         LEFT JOIN Dogs_Owners do ON do.dog_id = d.id",
     );
-    if let Some(shelved_bool) = shelved {
+    if let Some(status_str) = status {
         query.push_str(&format!(
-            " WHERE d.shelved = {}",
-            if shelved_bool { 1 } else { 0 }
+            " WHERE d.status = {}",
+            status_str
         ));
     }
     query_utils::define_limit_and_offset(&mut query, limit, offset);
@@ -94,9 +94,9 @@ pub async fn save_pet(new_pet: &Dog) -> Result<(), sqlx::Error> {
     let pool = db::get_pool();
     let mut tx = pool.begin().await?;
 
-    let create_query = "INSERT INTO Dogs (name, gender, birthday, shelved, notes, picture_path, default_pack_price, breed_id, id) 
+    let create_query = "INSERT INTO Dogs (name, gender, birthday, status, notes, picture_path, default_pack_price, breed_id, id) 
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
-    let update_query = "UPDATE Dogs SET name = $1, gender = $2, birthday = $3, shelved = $4, notes = $5, picture_path = $6,
+    let update_query = "UPDATE Dogs SET name = $1, gender = $2, birthday = $3, status = $4, notes = $5, picture_path = $6,
     default_pack_price = $7, breed_id = $8, id = $9";
     let query = if exists_pet(&new_pet.id).await? {
         update_query
@@ -108,7 +108,7 @@ pub async fn save_pet(new_pet: &Dog) -> Result<(), sqlx::Error> {
         .bind(&new_pet.name)
         .bind(&new_pet.gender)
         .bind(&new_pet.birthday)
-        .bind(&new_pet.shelved)
+        .bind(&new_pet.status)
         .bind(&new_pet.notes)
         .bind(&new_pet.picture_path)
         .bind(&new_pet.default_pack_price)
