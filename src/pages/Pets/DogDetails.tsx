@@ -1,7 +1,7 @@
 // Temporary breaking changes for this commit
 
 import { useNavigate, useParams } from 'react-router';
-import ErrorPage from './ErrorPage';
+import ErrorPage from '../ErrorPage';
 import DogPicture from 'components/DogPicture';
 import { CSSProperties, useState } from 'react';
 import { BackIcon, PencilIcon, CancelIcon, AddIcon1, ToFileIcon } from 'common/icons';
