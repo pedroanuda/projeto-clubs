@@ -112,7 +112,10 @@ export default function OwnerDetails(props: { createMode?: boolean }) {
   };
 
   return (
-    <div className="p-4 pt-2 h-full box-border max-w-full outline-0" ref={containerRef}>
+    <div
+      className="p-4 pt-2 h-full box-border max-w-full outline-0 text-on-surface"
+      ref={containerRef}
+    >
       {editMode && data ? (
         <OwnerForm ownerInfo={{ ...data }} closeHandler={() => setEditMode(false)} />
       ) : createMode ? (

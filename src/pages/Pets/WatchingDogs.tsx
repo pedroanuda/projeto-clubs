@@ -28,7 +28,7 @@ export default function WatchingDogs() {
 
   return (
     <>
-      <div className="flex items-center justify-between mx-4 mt-4">
+      <div className="flex items-center justify-between mx-4 mt-4 text-on-surface">
         <h2 className="text-2xl font-bold">Pets</h2>
         <Button
           variant="outlined"
