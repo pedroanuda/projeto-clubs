@@ -18,11 +18,13 @@ pub async fn get_all_pets(
         JOIN Breeds b ON b.id = d.breed_id
         LEFT JOIN Dogs_Owners do ON do.dog_id = d.id",
     );
-    if let Some(status_str) = status {
-        query.push_str(&format!(
-            " WHERE d.status = '{}'",
-            status_str
-        ));
+    if let Some(status_str) = &status {
+        if !status_str.is_empty() && status_str != "all" {
+            query.push_str(&format!(
+                " WHERE d.status = '{}'",
+                status_str
+            ));
+        }
     }
     query.push_str(" GROUP BY d.id ORDER BY d.name ASC");
     query_utils::define_limit_and_offset(&mut query, limit, offset);
@@ -34,6 +36,7 @@ pub async fn get_all_pets(
 
 pub async fn search_pets(
     search: &str,
+    status: Option<String>,
     limit: Option<u32>,
     offset: Option<u32>,
 ) -> Result<Vec<Dog>, sqlx::Error> {
@@ -44,8 +47,16 @@ pub async fn search_pets(
         JOIN Breeds b ON b.id = d.breed_id
         LEFT JOIN Dogs_Owners do ON do.dog_id = d.id
         LEFT JOIN Owners o ON o.id = do.owner_id
-        WHERE d.name LIKE $1 OR o.name LIKE $2",
+        WHERE (d.name LIKE $1 OR o.name LIKE $2)",
     );
+    if let Some(status_str) = &status {
+        if !status_str.is_empty() && status_str != "all" {
+            query.push_str(&format!(
+                " AND d.status = '{}'",
+                status_str
+            ));
+        }
+    }
     query.push_str(" GROUP BY d.id ORDER BY d.name ASC");
     query_utils::define_limit_and_offset(&mut query, limit, offset);
 

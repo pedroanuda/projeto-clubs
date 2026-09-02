@@ -33,7 +33,7 @@ pub async fn list_pets(
     let offset = page.and_then(|page_n| limit.map(|limit_n| limit_n * (page_n - 1)));
 
     let dogs: Vec<Dog> = match search {
-        Some(search_str) => repository::search_pets(&search_str, limit, offset).await,
+        Some(search_str) => repository::search_pets(&search_str, status, limit, offset).await,
         None => repository::get_all_pets(status, limit, offset).await,
     }
     .map_err(|e| ApiResponse::error(&e.to_string()))?;

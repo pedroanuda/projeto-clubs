@@ -63,7 +63,7 @@ export default function AddDogDialog({ open, onClose }: AddDogDialogProps) {
       breed_id: parseInt(dogBreed),
       breed_name: getBreedName(parseInt(dogBreed)),
       owners: ownerInfo ? [ownerInfo] : undefined,
-      shelved: false,
+      status: 'active',
       birthday: null,
       default_pack_price: null,
       notes: null,
