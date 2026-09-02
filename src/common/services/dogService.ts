@@ -93,6 +93,60 @@ export async function addDog(newDog: IPet) {
   }
 }
 
+/**
+ * Fetches a single dog by its ID along with its owners and breed details.
+ *
+ * @param id The ID of the dog to fetch.
+ */
+export async function getDog(id: string) {
+  const breeds = await getBreeds();
+  try {
+    const dog = await api.getById<IPet>('Pet', id);
+    if (dog) {
+      dog.owners = await getOwners({ fromDogId: dog.id || '', onlyIdAndName: true });
+      dog.breed_name = breeds.find((breed) => breed.id === dog.breed_id)?.name || 'N/A';
+    }
+    return dog;
+  } catch (e) {
+    console.error('Error fetching dog by id: ', e);
+    throw e;
+  }
+}
+
+/**
+ * Updates an existing dog in the database via the backend.
+ *
+ * @param dog The dog object with updated properties.
+ */
+export async function updateDog(dog: IPet) {
+  const { owners, ...converted } = dog;
+  const ids = owners?.reduce((acc: string[], owner) => {
+    acc.push(owner.id);
+    return acc;
+  }, []);
+
+  try {
+    await api.update('Pet', { ...converted, owners_ids: ids });
+  } catch (e) {
+    console.error('Error updating dog: ', e);
+    throw e;
+  }
+}
+
+/**
+ * Deletes a dog from the database by its ID.
+ *
+ * @param id The ID of the dog to delete.
+ */
+export async function deleteDog(id: string) {
+  try {
+    await api.deleteById('Pet', id);
+  } catch (e) {
+    console.error('Error deleting dog: ', e);
+    throw e;
+  }
+}
+
 /** It gets all the breeds straight from the database. */
 export async function getBreeds() {
   try {

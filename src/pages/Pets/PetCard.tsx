@@ -1,5 +1,6 @@
 import { FocusRing, Icon, Ripple, useFocusRing } from 'actify';
 import IPet from 'common/interfaces/IPet';
+import { useNavigate } from 'react-router';
 
 export interface PetCardProps {
   pet: IPet;
@@ -20,11 +21,17 @@ function PetPicture({ picture_path, name }: { picture_path?: string | null; name
 
 export default function PetCard(props: PetCardProps) {
   const { pet } = props;
+  const navigate = useNavigate();
   const { focusProps, isFocusVisible } = useFocusRing();
   const gender = pet.gender === 'male' ? 'Macho' : 'Fêmea';
 
   return (
-    <div className="relative cursor-pointer rounded-2xl" {...focusProps} tabIndex={0}>
+    <div
+      className="relative cursor-pointer rounded-2xl"
+      {...focusProps}
+      tabIndex={0}
+      onClick={() => navigate(`/dogdetails/${pet.id}`)}
+    >
       <div className="p-4 rounded-2xl bg-surface-container text-on-surface select-none h-full flex gap-4">
         <PetPicture picture_path={pet.picture_path} name={pet.name} />
         <div className="flex flex-col grow">

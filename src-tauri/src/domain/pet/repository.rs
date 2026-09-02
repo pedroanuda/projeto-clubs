@@ -79,7 +79,7 @@ pub async fn get_pet_by_id(id: &str) -> Result<Dog, sqlx::Error> {
     SELECT d.*, b.name AS breed_name, GROUP_CONCAT(do.owner_id) AS owners_concat FROM Dogs d
     JOIN Breeds b ON b.id = d.breed_id
     LEFT JOIN Dogs_Owners do ON do.dog_id = d.id
-    WHERE id = $1
+    WHERE d.id = $1
     GROUP BY d.id";
     let row: DogRow = sqlx::query_as(&query).bind(id).fetch_one(pool).await?;
 
@@ -110,7 +110,7 @@ pub async fn save_pet(new_pet: &Dog) -> Result<(), sqlx::Error> {
     let create_query = "INSERT INTO Dogs (name, gender, birthday, status, notes, picture_path, default_pack_price, breed_id, id) 
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
     let update_query = "UPDATE Dogs SET name = $1, gender = $2, birthday = $3, status = $4, notes = $5, picture_path = $6,
-    default_pack_price = $7, breed_id = $8, id = $9";
+    default_pack_price = $7, breed_id = $8 WHERE id = $9";
     let query = if exists_pet(&new_pet.id).await? {
         update_query
     } else {
@@ -144,11 +144,21 @@ pub async fn add_owner_to_pet(
     owner_id: &str,
     tx: &mut sqlx::SqliteConnection,
 ) -> Result<(), sqlx::Error> {
+    let exists: i64 = sqlx::query_scalar("SELECT EXISTS(SELECT 1 FROM Dogs_Owners WHERE dog_id = $1 AND owner_id = $2)")
+        .bind(pet_id)
+        .bind(owner_id)
+        .fetch_one(&mut *tx)
+        .await?;
+
+    if exists == 1 {
+        return Ok(());
+    }
+
     let query = "INSERT INTO Dogs_Owners (dog_id, owner_id) VALUES ($1, $2)";
     sqlx::query(&query)
         .bind(pet_id)
         .bind(owner_id)
-        .execute(tx)
+        .execute(&mut *tx)
         .await?;
 
     Ok(())

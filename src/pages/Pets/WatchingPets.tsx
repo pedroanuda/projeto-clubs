@@ -90,6 +90,7 @@ export default function WatchingPets() {
       />
       <div className="mx-4 mt-2 pb-4">
         <ChipGroup
+          aria-label="Filtro de status"
           selectionMode="single"
           selectedKeys={[statusQuery]}
           onSelectionChange={handleStatusChange}

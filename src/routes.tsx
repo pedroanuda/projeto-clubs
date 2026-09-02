@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router';
 import {
   Configs,
-  DogDetails,
+  PetDetails,
   Help,
   OwnerDetails,
   WatchingPets,
@@ -20,7 +20,7 @@ export default function AppRoutes() {
             <Route path="view/:id" element={<OwnerDetails />} />
             <Route path="create" element={<OwnerDetails createMode={true} />} />
           </Route>
-          <Route path="dogdetails/:id" element={<DogDetails />} />
+          <Route path="dogdetails/:id" element={<PetDetails />} />
           <Route path="settings" element={<Configs />} />
           <Route path="help" element={<Help />} />
           <Route
