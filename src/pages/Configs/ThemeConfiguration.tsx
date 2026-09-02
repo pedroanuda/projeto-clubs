@@ -1,4 +1,4 @@
-import { FocusRing, useFocusRing } from 'actify';
+import { FocusRing, Icon, useFocusRing } from 'actify';
 import clsx from 'clsx';
 import { useConfiguration } from 'common/contexts/ConfigurationContext';
 
@@ -53,17 +53,23 @@ export default function ThemeConfiguration() {
 
   return (
     <div>
-      <h4 className="text-secondary font-semibold">Tema</h4>
-      <p className="text-sm text-on-surface">Escolha o tema do sistema</p>
-      <div className="flex items-center gap-2 mt-2">
-        {themeOptions.map((theme) => (
-          <ThemeButton
-            key={theme.label}
-            theme={theme}
-            selected={theme.label === selectedTheme}
-            onPress={() => setTheme(theme.label)}
-          />
-        ))}
+      <h4 className="text-secondary font-semibold mb-2 ml-2">Aparência</h4>
+      <div className="rounded-2xl bg-surface-container p-4 flex gap-4">
+        <Icon style={{ '--md-icon-size': '36px' } as React.CSSProperties}>Palette</Icon>
+        <div>
+          <h5 className="font-medium">Tema</h5>
+          <p className="text-sm text-on-surface">Escolha o tema do sistema</p>
+          <div className="flex items-center gap-2 mt-2">
+            {themeOptions.map((theme) => (
+              <ThemeButton
+                key={theme.label}
+                theme={theme}
+                selected={theme.label === selectedTheme}
+                onPress={() => setTheme(theme.label)}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

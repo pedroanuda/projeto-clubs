@@ -1,3 +1,4 @@
+import { Divider, Icon } from 'actify';
 import ThemeConfiguration from './ThemeConfiguration';
 
 export default function Configs() {
@@ -9,6 +10,15 @@ export default function Configs() {
         </div>
 
         <ThemeConfiguration />
+      </div>
+      <div className="h-full hidden md:flex md:w-[60%]">
+        <Divider orientation="vertical" />
+        <div className="flex justify-center items-center grow select-none flex-col gap-6 opacity-60">
+          <Icon style={{ '--md-icon-size': '120px' } as React.CSSProperties} fill>
+            Settings
+          </Icon>
+          <span className="text-lg">Realize suas configurações!</span>
+        </div>
       </div>
     </div>
   );
