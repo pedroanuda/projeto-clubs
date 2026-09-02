@@ -5,10 +5,10 @@ import { getAllDogs } from 'common/services/dogService';
 import { Button, ChipGroup, ChipItem, Icon } from 'actify';
 import AddDogDialog from 'components/AddDogDialog';
 import React from 'react';
-import IDog from 'common/interfaces/IDog';
+import IPet from 'common/interfaces/IPet';
 import PetCard from './PetCard';
 
-function PetsGrid({ pets }: { pets: IDog[] }) {
+function PetsGrid({ pets }: { pets: IPet[] }) {
   return (
     <div
       className="grid gap-4 px-4 pb-4 overflow-y-auto
@@ -21,7 +21,7 @@ function PetsGrid({ pets }: { pets: IDog[] }) {
   );
 }
 
-export default function WatchingDogs() {
+export default function WatchingPets() {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get('search');
   const statusQuery = searchParams.get('status') || 'active';

@@ -3,7 +3,7 @@ import Help from './Help';
 import WatchingOwners from './Owners/WatchingOwners';
 import DogDetails from './Pets/DogDetails';
 import OwnerDetails from './Owners/OwnerDetails';
-import WatchingDogs from './Pets/WatchingDogs';
+import WatchingPets from './Pets/WatchingPets';
 import ProviderPage from './ProviderPage';
 import ErrorPage from './ErrorPage';
 
@@ -13,7 +13,7 @@ export {
   Help,
   WatchingOwners,
   OwnerDetails,
-  WatchingDogs,
+  WatchingPets,
   ProviderPage,
   ErrorPage,
 };

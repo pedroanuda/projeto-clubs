@@ -1,8 +1,8 @@
 import { FocusRing, Icon, Ripple, useFocusRing } from 'actify';
-import IDog from 'common/interfaces/IDog';
+import IPet from 'common/interfaces/IPet';
 
 export interface PetCardProps {
-  pet: IDog;
+  pet: IPet;
 }
 
 function PetPicture({ picture_path, name }: { picture_path?: string | null; name: string }) {

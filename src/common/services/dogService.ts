@@ -1,4 +1,4 @@
-import IDog from 'common/interfaces/IDog';
+import IPet from 'common/interfaces/IPet';
 import { getOwners } from './ownerService';
 import api from 'common/api';
 
@@ -25,7 +25,7 @@ const dogsPerPage = 50;
  * names like it. <br />
  * **Observation:** If it's defined, then the {@link shelved} parameter won't make any difference.
  *
- * @returns A promise of an {@link IDog} array.
+ * @returns A promise of an {@link IPet} array.
  */
 export async function getAllDogs(
   shelved?: boolean,
@@ -52,8 +52,8 @@ export async function getAllDogs(
 
     const dogs =
       (fromOwnerId
-        ? await api.call<IDog[]>('Pet', 'ListByOwner', { owner_id: fromOwnerId })
-        : await api.list<IDog[]>('Pet', {
+        ? await api.call<IPet[]>('Pet', 'ListByOwner', { owner_id: fromOwnerId })
+        : await api.list<IPet[]>('Pet', {
             search: searchInput,
             status: resolvedStatus === 'all' ? null : resolvedStatus,
             ...pageConfig,
@@ -78,7 +78,7 @@ export async function getAllDogs(
  *
  * @param newDog The dog to be added.
  */
-export async function addDog(newDog: IDog) {
+export async function addDog(newDog: IPet) {
   const { owners, ...converted } = newDog;
   const ids = owners?.reduce((acc: String[], owner) => {
     acc.push(owner.id);

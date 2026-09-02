@@ -1,6 +1,6 @@
 export type PetStatus = 'active' | 'archived';
 
-export default interface IDog {
+export default interface IPet {
   id: string | null;
   name: string;
   breed_id: number;

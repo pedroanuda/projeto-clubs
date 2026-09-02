@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { v4 as uuid4 } from 'uuid';
 import styles from './AddDogDialog.module.css';
 import IOwner from 'common/interfaces/IOwner';
-import IDog from 'common/interfaces/IDog';
+import IPet from 'common/interfaces/IPet';
 import { useNavigate } from 'react-router';
 import { Button, Radio, RadioGroup, Select, SelectOption, TextField } from 'actify';
 import StylishDialog from 'components/StylishDialog';
@@ -56,7 +56,7 @@ export default function AddDogDialog({ open, onClose }: AddDogDialogProps) {
   const handleAdd = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let ownerInfo = getOwnerInfo(dogOwner);
-    let newDog: IDog = {
+    let newDog: IPet = {
       id: null,
       name: dogName,
       gender: dogGender,

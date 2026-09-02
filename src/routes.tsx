@@ -4,7 +4,7 @@ import {
   DogDetails,
   Help,
   OwnerDetails,
-  WatchingDogs,
+  WatchingPets,
   WatchingOwners,
   ProviderPage,
   ErrorPage,
@@ -15,7 +15,7 @@ export default function AppRoutes() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<ProviderPage />}>
-          <Route index element={<WatchingDogs />} />
+          <Route index element={<WatchingPets />} />
           <Route path="owners" element={<WatchingOwners />}>
             <Route path="view/:id" element={<OwnerDetails />} />
             <Route path="create" element={<OwnerDetails createMode={true} />} />
