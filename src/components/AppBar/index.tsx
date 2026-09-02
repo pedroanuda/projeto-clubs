@@ -13,20 +13,22 @@ const osType = type();
 
 export default function AppBar() {
   const [maximizeIcon, setMaximizeIcon] = React.useState<typeof MaximizeIcon>(MaximizeIcon);
+  const isMobile = ['ios', 'android'].includes(osType);
 
   return (
     <>
       <div className={styles.titlebar + ' text-on-surface'} data-tauri-drag-region>
-        {createPortal(
-          <div
-            className={styles.titlebarDecoration + ' text-on-surface'}
-            data-tauri-drag-region
-          >
-            {appName}
-          </div>,
-          document.body
-        )}
-        {!['ios', 'android'].includes(osType) && (
+        {!isMobile &&
+          createPortal(
+            <div
+              className={styles.titlebarDecoration + ' text-on-surface'}
+              data-tauri-drag-region
+            >
+              {appName}
+            </div>,
+            document.body
+          )}
+        {!isMobile && (
           <div>
             <div className={styles.titlebarButton} onClick={() => appWindow.minimize()}>
               <MinimizeIcon />
