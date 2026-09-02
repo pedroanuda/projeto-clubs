@@ -20,12 +20,12 @@ pub async fn get_all_pets(
     );
     if let Some(status_str) = status {
         query.push_str(&format!(
-            " WHERE d.status = {}",
+            " WHERE d.status = '{}'",
             status_str
         ));
     }
-    query_utils::define_limit_and_offset(&mut query, limit, offset);
     query.push_str(" GROUP BY d.id ORDER BY d.name ASC");
+    query_utils::define_limit_and_offset(&mut query, limit, offset);
 
     let rows: Vec<DogRow> = sqlx::query_as(&query).fetch_all(pool).await?;
     let pets: Vec<Dog> = rows.into_iter().map(Dog::from).collect();
@@ -46,12 +46,14 @@ pub async fn search_pets(
         LEFT JOIN Owners o ON o.id = do.owner_id
         WHERE d.name LIKE $1 OR o.name LIKE $2",
     );
-    query_utils::define_limit_and_offset(&mut query, limit, offset);
     query.push_str(" GROUP BY d.id ORDER BY d.name ASC");
+    query_utils::define_limit_and_offset(&mut query, limit, offset);
+
+    let search_pattern = format!("%{}%", search);
 
     let rows: Vec<DogRow> = sqlx::query_as(&query)
-        .bind(&search)
-        .bind(&search)
+        .bind(&search_pattern)
+        .bind(&search_pattern)
         .fetch_all(pool)
         .await?;
 

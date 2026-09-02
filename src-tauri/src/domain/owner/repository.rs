@@ -31,9 +31,11 @@ pub async fn search_owners(
     );
     query_utils::define_limit_and_offset(&mut query, limit, offset);
 
+    let search_pattern = format!("%{}%", search);
+
     let obj: Vec<Owner> = sqlx::query_as(&query)
-        .bind(&search)
-        .bind(&search)
+        .bind(&search_pattern)
+        .bind(&search_pattern)
         .fetch_all(pool)
         .await?;
     Ok(obj)
